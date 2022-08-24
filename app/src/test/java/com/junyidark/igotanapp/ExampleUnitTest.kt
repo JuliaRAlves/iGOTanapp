@@ -1,4 +1,4 @@
-package com.example.igotanapp
+package com.junyidark.igotanapp
 
 import org.junit.Test
 

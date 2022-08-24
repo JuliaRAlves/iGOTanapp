@@ -1,4 +1,4 @@
-package com.example.igotanapp.presentation
+package com.junyidark.igotanapp.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.igotanapp.presentation.theme.IGOTanappTheme
+import com.junyidark.igotanapp.presentation.theme.IGOTanappTheme
 
 class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

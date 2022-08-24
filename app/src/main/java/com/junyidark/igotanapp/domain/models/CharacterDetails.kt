@@ -1,4 +1,4 @@
-package com.example.igotanapp.domain.models
+package com.junyidark.igotanapp.domain.models
 
 data class CharacterDetails(
     val house: House,

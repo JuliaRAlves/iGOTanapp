@@ -1,4 +1,4 @@
-package com.example.igotanapp.presentation.theme
+package com.junyidark.igotanapp.presentation.theme
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.lightColors

@@ -1,4 +1,4 @@
-package com.example.igotanapp.presentation.theme
+package com.junyidark.igotanapp.presentation.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
