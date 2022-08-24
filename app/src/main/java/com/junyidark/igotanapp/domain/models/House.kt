@@ -1,7 +1,9 @@
 package com.junyidark.igotanapp.domain.models;
 
+import androidx.annotation.DrawableRes
+
 data class House(
-    val coatOfArms: String,
+    @DrawableRes val coatOfArms: Int,
     val name: String,
     val members: List<String>
 )

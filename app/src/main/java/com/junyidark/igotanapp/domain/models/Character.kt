@@ -1,6 +1,9 @@
 package com.junyidark.igotanapp.domain.models
 
 data class Character(
-    val basics: CharacterBasics,
-    val details: CharacterDetails
+    val photo: String,
+    val name: String,
+    val title: String,
+    val house: House,
+    val quotes: List<Quote>
 )
