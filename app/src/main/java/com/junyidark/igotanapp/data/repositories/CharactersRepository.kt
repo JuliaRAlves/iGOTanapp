@@ -16,11 +16,15 @@ class CharactersRepository @Inject constructor(
     private val detailsApi: CharacterDetailsApiInterface
 ) : CharactersRepositoryInterface {
     override fun getAllCharactersBasics(): List<CharacterBasics> {
-        return basicsApi.getAllCharactersBasics().toDomainObject()
+        val result = basicsApi.getAllCharactersBasics().getOrNull()
+
+        return result?.toDomainObject() ?: emptyList()
     }
 
-    override fun getCharacterDetails(firstName: String): CharacterDetails {
-        return detailsApi.getCharacterDetails().toDomainObject()
+    override fun getCharacterDetails(firstName: String): CharacterDetails? {
+        val result = detailsApi.getCharacterDetails(firstName).getOrNull()
+
+        return result?.toDomainObject()
     }
 
     private fun List<CharacterBasicsResponse>.toDomainObject(): List<CharacterBasics> {

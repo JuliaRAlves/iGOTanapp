@@ -5,29 +5,26 @@ import com.junyidark.igotanapp.data.apis.HousesApiInterface
 import com.junyidark.igotanapp.data.models.HouseResponse
 import com.junyidark.igotanapp.domain.models.House
 import com.junyidark.igotanapp.domain.repositories.HousesRepositoryInterface
+import com.junyidark.igotanapp.domain.usecases.GetHouseCoatOfArmsUseCaseInterface
 import javax.inject.Inject
 
 class HousesRepository @Inject constructor(
-    private val api: HousesApiInterface
+    private val api: HousesApiInterface,
+    private val getHouseCoatOfArmsUseCase: GetHouseCoatOfArmsUseCaseInterface
 ) : HousesRepositoryInterface {
     override fun getAllHouses(): List<House> {
-        return api.getAllHouses().toDomainObject()
+        val result = api.getAllHouses().getOrNull()
+
+        return result?.toDomainObject() ?: emptyList()
     }
 
     private fun List<HouseResponse>.toDomainObject(): List<House> {
         return this.map { house ->
             House(
-                coatOfArms = getCoatOfArmsByName(house.name),
+                coatOfArms = getHouseCoatOfArmsUseCase.invoke(house.name),
                 name = house.name,
                 members = house.members
             )
-        }
-    }
-
-    private fun getCoatOfArmsByName(houseName: String): Int {
-        return when (houseName) {
-            "House Stark" -> R.drawable.ic_launcher_foreground
-            else -> R.drawable.ic_launcher_background
         }
     }
 }

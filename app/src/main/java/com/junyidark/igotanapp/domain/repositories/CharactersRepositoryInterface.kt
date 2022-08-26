@@ -5,5 +5,5 @@ import com.junyidark.igotanapp.domain.models.CharacterDetails
 
 interface CharactersRepositoryInterface {
     fun getAllCharactersBasics() : List<CharacterBasics>
-    fun getCharacterDetails(firstName: String) : CharacterDetails
+    fun getCharacterDetails(firstName: String) : CharacterDetails?
 }
