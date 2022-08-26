@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">iGOTanapp</string>
-    <string name="title_activity_home">HomeActivity</string>
+    <string name="home_app_name">i GOT\nan app</string>
+    <string name="home_search_label">Enter a character name:</string>
 </resources>
