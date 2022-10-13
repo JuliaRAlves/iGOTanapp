@@ -1,5 +1,14 @@
 <resources>
-    <string name="app_name">iGOTanapp</string>
-    <string name="home_app_name">i GOT\nan app</string>
+    <string name="app_name">i GOT an app</string>
+    <string name="home_app_name_pt1">i\u0020</string>
+    <string name="home_app_name_pt2">GOT\n</string>
+    <string name="home_app_name_pt3">an app</string>
     <string name="home_search_label">Enter a character name:</string>
+    <string name="home_search_button_text">Search</string>
+    <string name="home_call_to_page">or see\u0020</string>
+    <string name="home_all_characters_page">All characters</string>
+    <string name="home_the_houses_page">The houses</string>
+    <string name="home_copyright_pt1">Created by\u0020</string>
+    <string name="home_copyright_author">JuliaRAlves</string>
+    <string name="home_copyright_pt2">, mother of\nunfinished apps, Khaleesi of if-else conditions\nand queen of null safety</string>
 </resources>

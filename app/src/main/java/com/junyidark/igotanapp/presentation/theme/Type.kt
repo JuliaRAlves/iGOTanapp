@@ -13,9 +13,29 @@ val TrajanPro = FontFamily(
 )
 
 val Typography = Typography(
+    overline = TextStyle(
+        fontFamily = TrajanPro,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp
+    ),
     body1 = TextStyle(
         fontFamily = TrajanPro,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
-    )
+    ),
+    body2 = TextStyle(
+        fontFamily = TrajanPro,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
+    ),
+    h1 = TextStyle(
+        fontFamily = TrajanPro,
+        fontWeight = FontWeight.Normal,
+        fontSize = 48.sp
+    ),
+    h2 = TextStyle(
+        fontFamily = TrajanPro,
+        fontWeight = FontWeight.Normal,
+        fontSize = 36.sp
+    ),
 )
