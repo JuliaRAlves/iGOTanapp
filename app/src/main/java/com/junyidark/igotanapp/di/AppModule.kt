@@ -1,13 +1,11 @@
 package com.junyidark.igotanapp.di
 
-import com.junyidark.igotanapp.data.apis.CharacterBasicsApiInterface
-import com.junyidark.igotanapp.data.apis.CharacterDetailsApiInterface
-import com.junyidark.igotanapp.data.apis.GameOfThronesQuotesApi
-import com.junyidark.igotanapp.data.apis.ThronesApi
+import com.junyidark.igotanapp.data.apis.*
 import com.junyidark.igotanapp.data.repositories.CharactersRepository
+import com.junyidark.igotanapp.data.repositories.HousesRepository
 import com.junyidark.igotanapp.domain.repositories.CharactersRepositoryInterface
-import com.junyidark.igotanapp.domain.usecases.SearchCharacterByNameUseCase
-import com.junyidark.igotanapp.domain.usecases.SearchCharacterByNameUseCaseInterface
+import com.junyidark.igotanapp.domain.repositories.HousesRepositoryInterface
+import com.junyidark.igotanapp.domain.usecases.*
 import com.junyidark.igotanapp.presentation.navigation.Router
 import com.junyidark.igotanapp.presentation.navigation.RouterInterface
 import dagger.Binds
@@ -26,9 +24,34 @@ abstract class AppViewModelModule {
     ): SearchCharacterByNameUseCaseInterface
 
     @Binds
+    abstract fun bindGetAllCharactersUseCase(
+        getAllCharactersListUseCase: GetAllCharactersListUseCase
+    ): GetAllCharactersListUseCaseInterface
+
+    @Binds
+    abstract fun bindGetCharacterFullInfoUseCase(
+        getCharacterFullInfoUseCase: GetCharacterFullInfoUseCase
+    ): GetCharacterFullInfoUseCaseInterface
+
+    @Binds
+    abstract fun bindGetAllHousesUseCase(
+        getAllHousesListUseCase: GetAllHousesListUseCase
+    ): GetAllHousesListUseCaseInterface
+
+    @Binds
+    abstract fun bindGetHouseCoatOfArmsUseCase(
+        getHouseCoatOfArmsUseCase: GetHouseCoatOfArmsUseCase
+    ): GetHouseCoatOfArmsUseCaseInterface
+
+    @Binds
     abstract fun bindCharactersRepository(
         charactersRepository: CharactersRepository
     ): CharactersRepositoryInterface
+
+    @Binds
+    abstract fun bindHousesRepository(
+        housesRepository: HousesRepository
+    ): HousesRepositoryInterface
 
     @Binds
     abstract fun bindCharactersBasicsApi(
@@ -37,8 +60,13 @@ abstract class AppViewModelModule {
 
     @Binds
     abstract fun bindCharactersDetailsApi(
-        characterBasicsApi: GameOfThronesQuotesApi
+        characterDetailsApi: GameOfThronesQuotesApi
     ): CharacterDetailsApiInterface
+
+    @Binds
+    abstract fun bindHousesApi(
+        housesApi: GameOfThronesQuotesApi
+    ): HousesApiInterface
 }
 
 @Module

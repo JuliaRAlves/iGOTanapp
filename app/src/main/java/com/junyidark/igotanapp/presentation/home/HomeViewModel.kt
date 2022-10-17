@@ -16,8 +16,8 @@ class HomeViewModel @Inject constructor(
     private val searchCharacterByNameUseCase: SearchCharacterByNameUseCase
 ) : ViewModel() {
 
-    private val homeMutableLiveData = MutableLiveData<HomeViewState>()
-    val homeLiveData: LiveData<HomeViewState> = homeMutableLiveData
+    private val screenMutableLiveData = MutableLiveData<HomeViewState>()
+    val screenLiveData: LiveData<HomeViewState> = screenMutableLiveData
 
     private var query: String = ""
 
@@ -25,21 +25,21 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             if (query.isNotEmpty()) {
                 val list = searchCharacterByNameUseCase.invoke(query)
-                homeMutableLiveData.postValue(LoadedResultState(list))
+                screenMutableLiveData.postValue(LoadedResultState(list))
             }
         }
     }
 
     fun onAllCharactersClicked() {
-        homeMutableLiveData.value = GoToAllCharactersState
+        screenMutableLiveData.value = GoToAllCharactersState
     }
 
     fun onTheHousesClicked() {
-        homeMutableLiveData.value = GoToTheHousesState
+        screenMutableLiveData.value = GoToTheHousesState
     }
 
     fun onAuthorNameClicked() {
-        homeMutableLiveData.value = GoToAuthorState
+        screenMutableLiveData.value = GoToAuthorState
     }
 
     fun onTextChanged(text: String) {

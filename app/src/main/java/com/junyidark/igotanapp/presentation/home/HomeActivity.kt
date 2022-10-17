@@ -1,5 +1,7 @@
 package com.junyidark.igotanapp.presentation.home
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,7 +21,6 @@ import com.junyidark.igotanapp.domain.models.CharacterBasics
 import com.junyidark.igotanapp.presentation.navigation.RouterInterface
 import com.junyidark.igotanapp.presentation.theme.IGOTanappTheme
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -30,6 +31,12 @@ class HomeActivity : ComponentActivity() {
     @Inject
     lateinit var router: RouterInterface
 
+    companion object {
+        fun getIntent(context: Context): Intent {
+            return Intent(context, HomeActivity::class.java)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -39,7 +46,7 @@ class HomeActivity : ComponentActivity() {
     }
 
     private fun setObservers() {
-        viewModel.homeLiveData.observe(this) { viewState ->
+        viewModel.screenLiveData.observe(this) { viewState ->
             when (viewState) {
                 is HomeViewModel.HomeViewState.GoToAllCharactersState -> goToAllCharacters()
                 is HomeViewModel.HomeViewState.GoToAuthorState -> goToAuthor()
