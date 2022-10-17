@@ -43,9 +43,9 @@ fun IGOTanappTheme(
         else -> IronHandPalette
     }
 
-    val view = LocalView.current
-    val window = (view.context as Activity).window
-    window.statusBarColor = colors.secondary.toArgb()
+//    val view = LocalView.current
+//    val window = (view.context as Activity).window
+//    window.statusBarColor = colors.secondary.toArgb()
 
     MaterialTheme(
         colors = colors,

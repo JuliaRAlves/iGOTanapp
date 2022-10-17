@@ -1,28 +1,12 @@
 package com.junyidark.igotanapp.presentation.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
@@ -93,19 +77,22 @@ fun formattedTitle(): AnnotatedString {
     return buildAnnotatedString {
         withStyle(style = ParagraphStyle()) {
             withStyle(
-                style = MaterialTheme.typography.h2.toSpanStyle().copy(color = MaterialTheme.colors.onSecondary)
+                style = MaterialTheme.typography.h2.toSpanStyle()
+                    .copy(color = MaterialTheme.colors.onSecondary)
             ) {
                 append(stringResource(id = R.string.home_app_name_pt1))
             }
 
             withStyle(
-                style = MaterialTheme.typography.h1.toSpanStyle().copy(color = MaterialTheme.colors.primary)
+                style = MaterialTheme.typography.h1.toSpanStyle()
+                    .copy(color = MaterialTheme.colors.primary)
             ) {
                 append(stringResource(id = R.string.home_app_name_pt2))
             }
 
             withStyle(
-                style = MaterialTheme.typography.h2.toSpanStyle().copy(color = MaterialTheme.colors.onSecondary)
+                style = MaterialTheme.typography.h2.toSpanStyle()
+                    .copy(color = MaterialTheme.colors.onSecondary)
             ) {
                 append(stringResource(id = R.string.home_app_name_pt3))
             }
@@ -154,7 +141,11 @@ fun CallToPage(page: String, onClick: (Int) -> Unit) {
 
 @Composable
 fun Copyright(onClick: (Int) -> Unit) {
-    ClickableText(text = formattedCopyright(), modifier = Modifier.fillMaxWidth(), onClick = onClick)
+    ClickableText(
+        text = formattedCopyright(),
+        modifier = Modifier.fillMaxWidth(),
+        onClick = onClick
+    )
 }
 
 @Composable
@@ -162,19 +153,22 @@ fun formattedCopyright(): AnnotatedString {
     return buildAnnotatedString {
         withStyle(style = ParagraphStyle().copy(textAlign = TextAlign.Center)) {
             withStyle(
-                style = MaterialTheme.typography.overline.toSpanStyle().copy(color = MaterialTheme.colors.onSecondary)
+                style = MaterialTheme.typography.overline.toSpanStyle()
+                    .copy(color = MaterialTheme.colors.onSecondary)
             ) {
                 append(stringResource(id = R.string.home_copyright_pt1))
             }
 
             withStyle(
-                style = MaterialTheme.typography.overline.toSpanStyle().copy(color = MaterialTheme.colors.primary)
+                style = MaterialTheme.typography.overline.toSpanStyle()
+                    .copy(color = MaterialTheme.colors.primary)
             ) {
                 append(stringResource(id = R.string.home_copyright_author))
             }
 
             withStyle(
-                style = MaterialTheme.typography.overline.toSpanStyle().copy(color = MaterialTheme.colors.onSecondary)
+                style = MaterialTheme.typography.overline.toSpanStyle()
+                    .copy(color = MaterialTheme.colors.onSecondary)
             ) {
                 append(stringResource(id = R.string.home_copyright_pt2))
             }

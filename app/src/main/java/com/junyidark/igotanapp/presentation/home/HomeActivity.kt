@@ -5,14 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,13 +15,20 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.junyidark.igotanapp.R
+import com.junyidark.igotanapp.domain.models.CharacterBasics
+import com.junyidark.igotanapp.presentation.navigation.RouterInterface
 import com.junyidark.igotanapp.presentation.theme.IGOTanappTheme
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeActivity : ComponentActivity() {
 
     private val viewModel by viewModels<HomeViewModel>()
+
+    @Inject
+    lateinit var router: RouterInterface
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,21 +44,25 @@ class HomeActivity : ComponentActivity() {
                 is HomeViewModel.HomeViewState.GoToAllCharactersState -> goToAllCharacters()
                 is HomeViewModel.HomeViewState.GoToAuthorState -> goToAuthor()
                 is HomeViewModel.HomeViewState.GoToTheHousesState -> goToTheHouses()
-                is HomeViewModel.HomeViewState.LoadedResultState -> {}
+                is HomeViewModel.HomeViewState.LoadedResultState -> goToResultList(viewState.result)
             }
         }
     }
 
     private fun goToAllCharacters() {
-        // TODO: go to activity
+        router.goToCharactersList(context = this, resultList = emptyList())
     }
 
     private fun goToAuthor() {
-        // TODO: go to activity
+        router.goToAuthor(context = this)
     }
 
     private fun goToTheHouses() {
-        // TODO: go to activity
+        router.goToHousesList(context = this)
+    }
+
+    private fun goToResultList(searchResult: List<CharacterBasics>) {
+        router.goToCharactersList(context = this, resultList = searchResult)
     }
 }
 

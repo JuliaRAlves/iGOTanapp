@@ -4,14 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.junyidark.igotanapp.domain.models.CharacterBasics
 import com.junyidark.igotanapp.domain.usecases.SearchCharacterByNameUseCase
-import com.junyidark.igotanapp.presentation.home.HomeViewModel.HomeViewState.GoToAllCharactersState
-import com.junyidark.igotanapp.presentation.home.HomeViewModel.HomeViewState.GoToAuthorState
-import com.junyidark.igotanapp.presentation.home.HomeViewModel.HomeViewState.GoToTheHousesState
-import com.junyidark.igotanapp.presentation.home.HomeViewModel.HomeViewState.LoadedResultState
+import com.junyidark.igotanapp.presentation.home.HomeViewModel.HomeViewState.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -49,7 +47,7 @@ class HomeViewModel @Inject constructor(
     }
 
     sealed class HomeViewState {
-        data class LoadedResultState(val result: List<String>) : HomeViewState()
+        data class LoadedResultState(val result: List<CharacterBasics>) : HomeViewState()
         object GoToAllCharactersState : HomeViewState()
         object GoToTheHousesState : HomeViewState()
         object GoToAuthorState : HomeViewState()

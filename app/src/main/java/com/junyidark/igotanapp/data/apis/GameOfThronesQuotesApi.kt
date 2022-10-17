@@ -5,6 +5,7 @@ import com.junyidark.igotanapp.data.models.HouseResponse
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Path
+import javax.inject.Inject
 
 interface GameOfThronesQuotesApiServices {
     @GET("v1/character/{slug}")
@@ -14,13 +15,15 @@ interface GameOfThronesQuotesApiServices {
     fun getAllHouses(): Result<List<HouseResponse>>
 }
 
-class GameOfThronesQuotesApi : CharacterDetailsApiInterface, HousesApiInterface {
+class GameOfThronesQuotesApi @Inject constructor() : CharacterDetailsApiInterface,
+    HousesApiInterface {
 
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("https://api.gameofthronesquotes.xyz/")
         .build()
 
-    private val service: GameOfThronesQuotesApiServices = retrofit.create(GameOfThronesQuotesApiServices::class.java)
+    private val service: GameOfThronesQuotesApiServices =
+        retrofit.create(GameOfThronesQuotesApiServices::class.java)
 
     override fun getCharacterDetails(firstName: String): Result<CharacterDetailsResponse> {
         return service.getCharacter(firstName)
