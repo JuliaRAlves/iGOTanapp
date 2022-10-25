@@ -12,4 +12,9 @@
     <string name="home_copyright_pt1">Created by\u0020</string>
     <string name="home_copyright_author">JuliaRAlves</string>
     <string name="home_copyright_pt2">, mother of\nunfinished apps, Khaleesi of if-else conditions\nand queen of null safety</string>
+
+    <string name="see_more">See more</string>
+    <string name="toolbar_app_name_pt1">i\u0020</string>
+    <string name="toolbar_app_name_pt2">GOT\u0020</string>
+    <string name="toolbar_app_name_pt3">an app</string>
 </resources>

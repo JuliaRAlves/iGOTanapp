@@ -20,12 +20,22 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.junyidark.igotanapp.R
+import com.junyidark.igotanapp.presentation.core.formattedAppTitle
 import com.junyidark.igotanapp.presentation.theme.IGOTanappTheme
 import com.junyidark.igotanapp.presentation.theme.Shapes
 
 @Composable
 fun Title() {
-    Text(formattedTitle())
+    Text(
+        formattedAppTitle(
+            firstPart = R.string.home_app_name_pt1,
+            secondPart = R.string.home_app_name_pt2,
+            lastPart = R.string.home_app_name_pt3,
+            firstPartStyle = MaterialTheme.typography.h2,
+            secondPartStyle = MaterialTheme.typography.h1,
+            lastPartStyle = MaterialTheme.typography.h2
+        )
+    )
 }
 
 @Composable
@@ -69,34 +79,6 @@ fun SearchBar(onTextChange: (String) -> Unit) {
                 }
             }
         )
-    }
-}
-
-@Composable
-fun formattedTitle(): AnnotatedString {
-    return buildAnnotatedString {
-        withStyle(style = ParagraphStyle()) {
-            withStyle(
-                style = MaterialTheme.typography.h2.toSpanStyle()
-                    .copy(color = MaterialTheme.colors.onSecondary)
-            ) {
-                append(stringResource(id = R.string.home_app_name_pt1))
-            }
-
-            withStyle(
-                style = MaterialTheme.typography.h1.toSpanStyle()
-                    .copy(color = MaterialTheme.colors.primary)
-            ) {
-                append(stringResource(id = R.string.home_app_name_pt2))
-            }
-
-            withStyle(
-                style = MaterialTheme.typography.h2.toSpanStyle()
-                    .copy(color = MaterialTheme.colors.onSecondary)
-            ) {
-                append(stringResource(id = R.string.home_app_name_pt3))
-            }
-        }
     }
 }
 
