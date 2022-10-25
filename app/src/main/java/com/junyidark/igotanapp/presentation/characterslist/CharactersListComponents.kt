@@ -1,6 +1,5 @@
 package com.junyidark.igotanapp.presentation.characterslist
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -12,9 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.junyidark.igotanapp.R
 import com.junyidark.igotanapp.presentation.core.SeeMoreIcon
 import com.junyidark.igotanapp.presentation.core.Toolbar
@@ -22,7 +21,7 @@ import com.junyidark.igotanapp.presentation.theme.IGOTanappTheme
 
 @Composable
 fun CharacterListItem(
-    @DrawableRes photo: Int,
+    photoUrl: String,
     name: String,
     title: String,
     onClick: () -> Unit,
@@ -35,7 +34,7 @@ fun CharacterListItem(
         verticalAlignment = CenterVertically
     ) {
         Image(
-            painter = painterResource(id = photo),
+            painter = rememberAsyncImagePainter(model = photoUrl),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -72,7 +71,7 @@ private fun IronHandComponentsPreview() {
         Column(Modifier.background(MaterialTheme.colors.secondary)) {
             Toolbar(modifier = Modifier.padding(bottom = 16.dp), onClickBack = { }, onClickMenu = { })
             CharacterListItem(
-                photo = R.drawable.jon_snow_1,
+                photoUrl = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fthenexus.one%2Fgame-of-thrones-todos-que-sabiam-que-jon-snow-era-um-targaryen-antes-dele%2F&psig=AOvVaw1UmiIGwmrWLmZnyvLYpJVc&ust=1666791581081000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCIDp_8W_-_oCFQAAAAAdAAAAABAE",
                 name = "Jon Snow",
                 title = "King of the North",
                 onClick = { }
@@ -88,7 +87,7 @@ private fun DeepRiversComponentsPreview() {
         Column(Modifier.background(MaterialTheme.colors.secondary)) {
             Toolbar(modifier = Modifier.padding(bottom = 16.dp), onClickBack = { }, onClickMenu = { })
             CharacterListItem(
-                photo = R.drawable.jon_snow_1,
+                photoUrl = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fthenexus.one%2Fgame-of-thrones-todos-que-sabiam-que-jon-snow-era-um-targaryen-antes-dele%2F&psig=AOvVaw1UmiIGwmrWLmZnyvLYpJVc&ust=1666791581081000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCIDp_8W_-_oCFQAAAAAdAAAAABAE",
                 name = "Jon Snow",
                 title = "King of the North",
                 onClick = { }
@@ -104,7 +103,7 @@ private fun IntoTheSunComponentsPreview() {
         Column(Modifier.background(MaterialTheme.colors.secondary)) {
             Toolbar(modifier = Modifier.padding(bottom = 16.dp), onClickBack = { }, onClickMenu = { })
             CharacterListItem(
-                photo = R.drawable.jon_snow_1,
+                photoUrl = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fthenexus.one%2Fgame-of-thrones-todos-que-sabiam-que-jon-snow-era-um-targaryen-antes-dele%2F&psig=AOvVaw1UmiIGwmrWLmZnyvLYpJVc&ust=1666791581081000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCIDp_8W_-_oCFQAAAAAdAAAAABAE",
                 name = "Jon Snow",
                 title = "King of the North",
                 onClick = { }

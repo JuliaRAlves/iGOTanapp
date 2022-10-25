@@ -6,7 +6,8 @@ import com.junyidark.igotanapp.domain.models.CharacterBasics
 import com.junyidark.igotanapp.domain.usecases.GetAllCharactersListUseCase
 import com.junyidark.igotanapp.domain.usecases.GetCharacterFullInfoUseCase
 import com.junyidark.igotanapp.presentation.characterslist.CharactersListActivity.Companion.EXTRA_CHARACTERS_RESULT_LIST
-import com.junyidark.igotanapp.presentation.characterslist.CharactersListViewModel.CharactersListViewState.*
+import com.junyidark.igotanapp.presentation.characterslist.CharactersListViewModel.CharactersListNavigationViewState.GoToCharacterDetailsState
+import com.junyidark.igotanapp.presentation.characterslist.CharactersListViewModel.CharactersListNavigationViewState.OpenMenuState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,8 +19,12 @@ class CharactersListViewModel @Inject constructor(
     private val getCharacterFullInfoUseCase: GetCharacterFullInfoUseCase
 ) : ViewModel() {
 
-    private val screenMutableLiveData = MutableLiveData<CharactersListViewState>()
-    val screenLiveData: LiveData<CharactersListViewState> = screenMutableLiveData
+    private val charactersListMutableLiveData = MutableLiveData<List<CharacterBasics>>()
+    val charactersListLiveData: LiveData<List<CharacterBasics>> = charactersListMutableLiveData
+
+    private val navigationMutableLiveData = MutableLiveData<CharactersListNavigationViewState>()
+    val navigationLiveData: LiveData<CharactersListNavigationViewState> = navigationMutableLiveData
+
 
     private val charactersResultList by lazy {
         savedStateHandle.get<List<CharacterBasics>>(
@@ -31,36 +36,30 @@ class CharactersListViewModel @Inject constructor(
         if (charactersResultList.isEmpty()) {
             loadAllCharacters()
         } else {
-            screenMutableLiveData.value = LoadedListState(charactersResultList)
+            charactersListMutableLiveData.value = charactersResultList
         }
     }
 
     private fun loadAllCharacters() {
         viewModelScope.launch {
             val list = getAllCharactersListUseCase.invoke()
-            screenMutableLiveData.postValue(LoadedListState(list))
+            charactersListMutableLiveData.postValue(list)
         }
     }
 
     fun onCharacterClicked(position: Int) {
         viewModelScope.launch {
             val characterDetails = getCharacterFullInfoUseCase.invoke(charactersResultList[position])
-            screenMutableLiveData.postValue(GoToCharacterDetailsState(characterDetails))
+            navigationMutableLiveData.postValue(GoToCharacterDetailsState(characterDetails))
         }
     }
 
     fun onMenuClicked() {
-        screenMutableLiveData.value = OpenMenuState
+        navigationMutableLiveData.value = OpenMenuState
     }
 
-    fun onBackPressed() {
-        screenMutableLiveData.value = GoToHomeState
-    }
-
-    sealed class CharactersListViewState {
-        data class LoadedListState(val list: List<CharacterBasics>) : CharactersListViewState()
-        data class GoToCharacterDetailsState(val character: Character) : CharactersListViewState()
-        object GoToHomeState : CharactersListViewState()
-        object OpenMenuState : CharactersListViewState()
+    sealed class CharactersListNavigationViewState {
+        data class GoToCharacterDetailsState(val character: Character) : CharactersListNavigationViewState()
+        object OpenMenuState : CharactersListNavigationViewState()
     }
 }

@@ -6,11 +6,21 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.junyidark.igotanapp.domain.models.Character
 import com.junyidark.igotanapp.domain.models.CharacterBasics
-import com.junyidark.igotanapp.presentation.characterslist.CharactersListViewModel.CharactersListViewState.*
+import com.junyidark.igotanapp.presentation.characterslist.CharactersListViewModel.CharactersListNavigationViewState.GoToCharacterDetailsState
+import com.junyidark.igotanapp.presentation.characterslist.CharactersListViewModel.CharactersListNavigationViewState.OpenMenuState
+import com.junyidark.igotanapp.presentation.core.Toolbar
 import com.junyidark.igotanapp.presentation.navigation.RouterInterface
 import com.junyidark.igotanapp.presentation.theme.IGOTanappTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,17 +56,13 @@ class CharactersListActivity : ComponentActivity() {
     }
 
     private fun setObservers() {
-        viewModel.screenLiveData.observe(this) { viewState ->
+        viewModel.navigationLiveData.observe(this) { viewState ->
             when (viewState) {
                 is GoToCharacterDetailsState -> goToCharacterDetails(viewState.character)
-                is GoToHomeState -> goToHome()
                 is OpenMenuState -> openMenu()
+                else -> {}
             }
         }
-    }
-
-    private fun goToHome() {
-        router.goToHome(context = this)
     }
 
     private fun goToCharacterDetails(character: Character) {
@@ -67,11 +73,30 @@ class CharactersListActivity : ComponentActivity() {
 
     }
 
-}
+    @Composable
+    private fun CharactersList(charactersListViewModel: CharactersListViewModel = viewModel()) {
+        IGOTanappTheme {
+            Surface(
+                color = MaterialTheme.colors.secondary,
+                modifier = Modifier.fillMaxHeight()
+            ) {
+                Column {
+                    Toolbar(onClickBack = { onBackPressed() }, onClickMenu = { viewModel.onMenuClicked() })
 
-@Composable
-private fun CharactersList(charactersListViewModel: CharactersListViewModel = viewModel()) {
-    IGOTanappTheme {
+                    val charactersList =
+                        charactersListViewModel.charactersListLiveData.observeAsState().value ?: emptyList()
 
+                    LazyColumn {
+                        itemsIndexed(charactersList) { index, character ->
+                            CharacterListItem(
+                                photoUrl = character.photo,
+                                name = character.name,
+                                title = character.title,
+                                onClick = { viewModel.onCharacterClicked(index) })
+                        }
+                    }
+                }
+            }
+        }
     }
 }

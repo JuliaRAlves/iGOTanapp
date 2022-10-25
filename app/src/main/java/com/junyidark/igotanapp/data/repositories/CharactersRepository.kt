@@ -2,6 +2,7 @@ package com.junyidark.igotanapp.data.repositories
 
 import com.junyidark.igotanapp.data.apis.CharacterBasicsApiInterface
 import com.junyidark.igotanapp.data.apis.CharacterDetailsApiInterface
+import com.junyidark.igotanapp.data.apis.MockApi
 import com.junyidark.igotanapp.data.models.CharacterBasicsResponse
 import com.junyidark.igotanapp.data.models.CharacterDetailsResponse
 import com.junyidark.igotanapp.domain.models.CharacterBasics
@@ -16,7 +17,8 @@ class CharactersRepository @Inject constructor(
     private val detailsApi: CharacterDetailsApiInterface
 ) : CharactersRepositoryInterface {
     override fun getAllCharactersBasics(): List<CharacterBasics> {
-        val result = basicsApi.getAllCharactersBasics().getOrNull()
+        // TODO: use basicsApi
+        val result = MockApi().getAllCharactersBasics().body()
 
         return result?.toDomainObject() ?: emptyList()
     }

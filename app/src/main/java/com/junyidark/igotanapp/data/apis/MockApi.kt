@@ -3,10 +3,11 @@ package com.junyidark.igotanapp.data.apis
 import com.junyidark.igotanapp.data.models.CharacterBasicsResponse
 import com.junyidark.igotanapp.data.models.CharacterDetailsResponse
 import com.junyidark.igotanapp.data.models.HouseResponse
+import retrofit2.Response
 
 class MockApi : CharacterBasicsApiInterface, CharacterDetailsApiInterface, HousesApiInterface {
-    override fun getAllCharactersBasics(): Result<List<CharacterBasicsResponse>> {
-        return Result.success(
+    override fun getAllCharactersBasics(): Response<List<CharacterBasicsResponse>> {
+        return Response.success(
             listOf(
                 CharacterBasicsResponse(
                     fullName = "Jon Snow",
