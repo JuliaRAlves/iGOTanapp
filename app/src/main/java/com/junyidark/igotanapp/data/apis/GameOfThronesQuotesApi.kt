@@ -2,6 +2,7 @@ package com.junyidark.igotanapp.data.apis
 
 import com.junyidark.igotanapp.data.models.CharacterDetailsResponse
 import com.junyidark.igotanapp.data.models.HouseResponse
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -12,7 +13,7 @@ interface GameOfThronesQuotesApiServices {
     fun getCharacter(@Path("slug") slug: String): Result<CharacterDetailsResponse>
 
     @GET("v1/houses")
-    fun getAllHouses(): Result<List<HouseResponse>>
+    fun getAllHouses(): Response<List<HouseResponse>>
 }
 
 class GameOfThronesQuotesApi @Inject constructor() : CharacterDetailsApiInterface,
@@ -29,7 +30,7 @@ class GameOfThronesQuotesApi @Inject constructor() : CharacterDetailsApiInterfac
         return service.getCharacter(firstName)
     }
 
-    override fun getAllHouses(): Result<List<HouseResponse>> {
+    override fun getAllHouses(): Response<List<HouseResponse>> {
         return service.getAllHouses()
     }
 

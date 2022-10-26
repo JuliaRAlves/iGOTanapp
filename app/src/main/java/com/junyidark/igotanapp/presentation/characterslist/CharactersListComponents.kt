@@ -43,7 +43,9 @@ fun CharacterListItem(
         )
 
         Column(
-            modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_12dp))
+            modifier = Modifier
+                .padding(horizontal = dimensionResource(id = R.dimen.padding_12dp))
+                .weight(1f)
         ) {
             Text(
                 text = name,
@@ -57,8 +59,6 @@ fun CharacterListItem(
                 color = MaterialTheme.colors.onSecondary
             )
         }
-
-        Spacer(modifier = Modifier.weight(1f))
 
         SeeMoreIcon(onClick = onClick)
     }

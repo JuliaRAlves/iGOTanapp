@@ -47,8 +47,8 @@ class MockApi : CharacterBasicsApiInterface, CharacterDetailsApiInterface, House
         )
     }
 
-    override fun getAllHouses(): Result<List<HouseResponse>> {
-        return Result.success(
+    override fun getAllHouses(): Response<List<HouseResponse>> {
+        return Response.success(
             listOf(
                 HouseResponse(
                     name = "House Stark of Winterfell",
