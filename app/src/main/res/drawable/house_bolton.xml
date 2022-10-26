@@ -8,8 +8,7 @@
       android:pathData="m2,2v257c0,286 298,398 298,398c0,0 298,-112 298,-398V2z"
       android:fillColor="#ff9999"/>
   <path
-      android:pathData="m2,2v257c0,286 298,398 298,398c0,0 298,-112 298,-398V2z"
-      android:fillColor="url(#drops)"/>
+      android:pathData="m2,2v257c0,286 298,398 298,398c0,0 298,-112 298,-398V2z" />
   <path
       android:pathData="M250,50h100v560h-100z"
       android:fillColor="#ff9999"/>

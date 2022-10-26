@@ -1,12 +1,13 @@
 package com.junyidark.igotanapp.data.repositories
 
-import com.junyidark.igotanapp.R
-import com.junyidark.igotanapp.data.apis.HousesApiInterface
-import com.junyidark.igotanapp.data.apis.MockApi
+import com.junyidark.igotanapp.data.apis.interfaces.HousesApiInterface
 import com.junyidark.igotanapp.data.models.HouseResponse
 import com.junyidark.igotanapp.domain.models.House
 import com.junyidark.igotanapp.domain.repositories.HousesRepositoryInterface
 import com.junyidark.igotanapp.domain.usecases.GetHouseCoatOfArmsUseCaseInterface
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import javax.inject.Inject
 
 class HousesRepository @Inject constructor(
@@ -15,9 +16,18 @@ class HousesRepository @Inject constructor(
 ) : HousesRepositoryInterface {
     override fun getAllHouses(): List<House> {
         // TODO: use api
-        val result = MockApi().getAllHouses().body()
+        val result = api.getAllHouses().enqueue(object : Callback<List<HouseResponse>> {
+            override fun onResponse(call: Call<List<HouseResponse>>, response: Response<List<HouseResponse>>) {
+                TODO("Not yet implemented")
+            }
 
-        return result?.toDomainObject() ?: emptyList()
+            override fun onFailure(call: Call<List<HouseResponse>>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+
+        })
+
+        return emptyList()
     }
 
     private fun List<HouseResponse>.toDomainObject(): List<House> {

@@ -42,8 +42,9 @@ class CharactersListViewModel @Inject constructor(
 
     private fun loadAllCharacters() {
         viewModelScope.launch {
-            val list = getAllCharactersListUseCase.invoke()
-            charactersListMutableLiveData.postValue(list)
+            getAllCharactersListUseCase.invoke(onSuccess = { list ->
+                charactersListMutableLiveData.postValue(list)
+            })
         }
     }
 

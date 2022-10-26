@@ -4,14 +4,14 @@ import com.google.gson.annotations.SerializedName
 
 class CharacterBasicsResponse(
     @SerializedName("fullName")
-    val fullName: String,
+    val fullName: String?,
 
     @SerializedName("title")
-    val title: String,
+    val title: String?,
 
     @SerializedName("imageUrl")
-    val imageUrl: String,
+    val imageUrl: String?,
 
     @SerializedName("house")
-    val house: String
+    val house: String?
 )

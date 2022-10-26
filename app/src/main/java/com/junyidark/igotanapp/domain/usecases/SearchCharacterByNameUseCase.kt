@@ -13,7 +13,7 @@ class SearchCharacterByNameUseCase @Inject constructor(
 ) : SearchCharacterByNameUseCaseInterface {
 
     override fun invoke(query: String): List<CharacterBasics> {
-        val charactersList = charactersRepository.getAllCharactersBasics()
+        val charactersList = emptyList<CharacterBasics>()
 
         return charactersList.searchFor(query)
     }
