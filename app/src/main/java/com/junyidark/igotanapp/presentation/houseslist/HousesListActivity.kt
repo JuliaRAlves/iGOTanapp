@@ -78,8 +78,7 @@ class HousesListActivity : ComponentActivity() {
                     Column {
                         Toolbar(onClickBack = { onBackPressed() }, onClickMenu = { viewModel.onMenuClicked() })
 
-                        val housesList =
-                            housesListViewModel.housesListLiveData.observeAsState().value ?: emptyList()
+                        val housesList = housesListViewModel.housesListLiveData.observeAsState().value ?: emptyList()
 
                         LazyColumn {
                             itemsIndexed(housesList) { index, house ->

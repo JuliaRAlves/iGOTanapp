@@ -7,5 +7,10 @@ class HouseResponse(
     val name: String,
 
     @SerializedName("members")
-    val members: List<String> = emptyList()
+    val members: List<MemberResponse> = emptyList()
+)
+
+class MemberResponse(
+    @SerializedName("name")
+    val name: String
 )

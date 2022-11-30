@@ -27,8 +27,10 @@ class HousesListViewModel @Inject constructor(
 
     fun loadList() {
         viewModelScope.launch {
-            housesList = getAllHousesListUseCase.invoke()
-            housesListMutableLiveData.postValue(housesList)
+            getAllHousesListUseCase.invoke() { list ->
+                housesList = list
+                housesListMutableLiveData.postValue(list)
+            }
         }
     }
 

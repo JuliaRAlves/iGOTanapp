@@ -21,9 +21,8 @@ class CharactersRepository @Inject constructor(
 ) : CharactersRepositoryInterface {
     override fun getAllCharactersBasics(
         onSuccess: (List<CharacterBasics>) -> Unit
-    ){
-        // TODO: use basicsApi
-        val result = basicsApi.getAllCharactersBasics().enqueue(object : Callback<List<CharacterBasicsResponse>>{
+    ) {
+        basicsApi.getAllCharactersBasics().enqueue(object : Callback<List<CharacterBasicsResponse>> {
             override fun onResponse(
                 call: Call<List<CharacterBasicsResponse>>,
                 response: Response<List<CharacterBasicsResponse>>
@@ -38,21 +37,26 @@ class CharactersRepository @Inject constructor(
         })
     }
 
-    override fun getCharacterDetails(firstName: String): CharacterDetails? {
-        val result = detailsApi.getCharacterDetails(firstName).enqueue(object : Callback<CharacterDetailsResponse> {
+    override fun getCharacterDetails(firstName: String, onSuccess: (CharacterDetails) -> Unit) {
+        detailsApi.getCharacterDetails(firstName).enqueue(object : Callback<CharacterDetailsResponse> {
             override fun onResponse(
                 call: Call<CharacterDetailsResponse>,
                 response: Response<CharacterDetailsResponse>
             ) {
-                TODO("Not yet implemented")
+                val body = response.body()
+
+                if (body == null) {
+                    onFailure(call, Throwable("CharacterDetailsResponse is null"))
+                } else {
+                    onSuccess(body.toDomainObject())
+                }
             }
 
             override fun onFailure(call: Call<CharacterDetailsResponse>, t: Throwable) {
-                TODO("Not yet implemented")
+                Log.e("Characters details api", "onFailure: getCharacterDetails ")
             }
 
         })
-        return CharacterDetails(house = null, quotes = emptyList())
     }
 
     private fun List<CharacterBasicsResponse>.toDomainObject(): List<CharacterBasics> {
@@ -70,7 +74,7 @@ class CharactersRepository @Inject constructor(
         val domainHouse = if (house == null) null else House(
             coatOfArms = -1,
             name = house.name,
-            members = house.members
+            members = house.members.map { it.name }
         )
         val domainQuotes = quotes.map { Quote(text = it) }
 

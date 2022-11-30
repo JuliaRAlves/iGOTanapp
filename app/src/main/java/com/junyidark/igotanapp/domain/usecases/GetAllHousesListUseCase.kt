@@ -5,15 +5,17 @@ import com.junyidark.igotanapp.domain.repositories.HousesRepositoryInterface
 import javax.inject.Inject
 
 interface GetAllHousesListUseCaseInterface {
-    fun invoke(): List<House>
+    fun invoke(onSuccess: (List<House>) -> Unit)
 }
 
 class GetAllHousesListUseCase @Inject constructor(
     private val housesRepository: HousesRepositoryInterface
 ) : GetAllHousesListUseCaseInterface {
 
-    override fun invoke(): List<House> {
-        return housesRepository.getAllHouses()
+    override fun invoke(onSuccess: (List<House>) -> Unit) {
+        return housesRepository.getAllHouses { response ->
+            onSuccess(response)
+        }
     }
 
 }

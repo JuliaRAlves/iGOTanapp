@@ -1,5 +1,6 @@
 package com.junyidark.igotanapp.data.repositories
 
+import android.util.Log
 import com.junyidark.igotanapp.data.apis.interfaces.HousesApiInterface
 import com.junyidark.igotanapp.data.models.HouseResponse
 import com.junyidark.igotanapp.domain.models.House
@@ -14,20 +15,20 @@ class HousesRepository @Inject constructor(
     private val api: HousesApiInterface,
     private val getHouseCoatOfArmsUseCase: GetHouseCoatOfArmsUseCaseInterface
 ) : HousesRepositoryInterface {
-    override fun getAllHouses(): List<House> {
-        // TODO: use api
-        val result = api.getAllHouses().enqueue(object : Callback<List<HouseResponse>> {
-            override fun onResponse(call: Call<List<HouseResponse>>, response: Response<List<HouseResponse>>) {
-                TODO("Not yet implemented")
+    override fun getAllHouses(onSuccess: (List<House>) -> Unit) {
+        api.getAllHouses().enqueue(object : Callback<List<HouseResponse>> {
+            override fun onResponse(
+                call: Call<List<HouseResponse>>,
+                response: Response<List<HouseResponse>>
+            ) {
+                onSuccess(response.body()?.toDomainObject() ?: emptyList())
             }
 
             override fun onFailure(call: Call<List<HouseResponse>>, t: Throwable) {
-                TODO("Not yet implemented")
+                Log.e("Houses api", "onFailure: getAllHouses ")
             }
 
         })
-
-        return emptyList()
     }
 
     private fun List<HouseResponse>.toDomainObject(): List<House> {
@@ -35,7 +36,7 @@ class HousesRepository @Inject constructor(
             House(
                 coatOfArms = getHouseCoatOfArmsUseCase.invoke(house.name),
                 name = house.name,
-                members = house.members
+                members = house.members.map { it.name }
             )
         }
     }

@@ -6,5 +6,5 @@ import retrofit2.Response
 
 interface CharactersRepositoryInterface {
     fun getAllCharactersBasics(onSuccess: (List<CharacterBasics>) -> Unit)
-    fun getCharacterDetails(firstName: String) : CharacterDetails?
+    fun getCharacterDetails(firstName: String, onSuccess: (CharacterDetails) -> Unit)
 }

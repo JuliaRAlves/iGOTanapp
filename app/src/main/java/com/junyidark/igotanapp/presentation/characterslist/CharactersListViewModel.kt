@@ -50,8 +50,9 @@ class CharactersListViewModel @Inject constructor(
 
     fun onCharacterClicked(position: Int) {
         viewModelScope.launch {
-            val characterDetails = getCharacterFullInfoUseCase.invoke(charactersResultList[position])
-            navigationMutableLiveData.postValue(GoToCharacterDetailsState(characterDetails))
+            getCharacterFullInfoUseCase.invoke(charactersResultList[position]) { character ->
+                navigationMutableLiveData.postValue(GoToCharacterDetailsState(character))
+            }
         }
     }
 
