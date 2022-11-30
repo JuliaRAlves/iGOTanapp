@@ -1,9 +1,12 @@
 package com.junyidark.igotanapp.presentation.core
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -11,11 +14,14 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
+import coil.compose.rememberAsyncImagePainter
 import com.junyidark.igotanapp.R
 
 @Composable
@@ -116,6 +122,57 @@ fun SeeMoreIcon(
             text = stringResource(id = R.string.see_more),
             style = MaterialTheme.typography.overline,
             color = MaterialTheme.colors.primary
+        )
+    }
+}
+
+@Composable
+fun PhotoAndName(
+    photoUrl: String,
+    name: String,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_16dp)),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Image(
+            painter = rememberAsyncImagePainter(model = photoUrl),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .clip(MaterialTheme.shapes.small)
+                .size(dimensionResource(id = R.dimen.details_photo_size))
+        )
+
+        Text(
+            text = name,
+            style = MaterialTheme.typography.h3,
+            color = MaterialTheme.colors.primary
+        )
+    }
+}
+
+@Composable
+fun Section(
+    title: String,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_4dp)),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.h4,
+            color = MaterialTheme.colors.onSecondary
+        )
+
+        Divider(
+            thickness = dimensionResource(id = R.dimen.divider_thickness),
+            color = MaterialTheme.colors.onPrimary
         )
     }
 }

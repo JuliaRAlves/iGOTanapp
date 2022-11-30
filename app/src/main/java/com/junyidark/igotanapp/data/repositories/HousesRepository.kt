@@ -36,7 +36,7 @@ class HousesRepository @Inject constructor(
             House(
                 coatOfArms = getHouseCoatOfArmsUseCase.invoke(house.name),
                 name = house.name,
-                members = house.members.map { it.name }
+                members = house.members?.map { it.name } ?: emptyList()
             )
         }
     }

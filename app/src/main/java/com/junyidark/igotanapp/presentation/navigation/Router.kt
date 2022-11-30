@@ -6,6 +6,7 @@ import android.net.Uri
 import com.junyidark.igotanapp.domain.models.Character
 import com.junyidark.igotanapp.domain.models.CharacterBasics
 import com.junyidark.igotanapp.domain.models.House
+import com.junyidark.igotanapp.presentation.characterdetails.CharacterDetailsActivity
 import com.junyidark.igotanapp.presentation.characterslist.CharactersListActivity
 import com.junyidark.igotanapp.presentation.home.HomeActivity
 import com.junyidark.igotanapp.presentation.houseslist.HousesListActivity
@@ -27,8 +28,9 @@ class Router @Inject constructor() : RouterInterface {
         context.startActivity(pageIntent)
     }
 
-    override fun goToCharacterDetails(context: Context, character: Character) {
-        //TODO criar rota
+    override fun goToCharacterDetails(context: Context, character: CharacterBasics) {
+        val pageIntent = CharacterDetailsActivity.getIntent(context, character)
+        context.startActivity(pageIntent)
     }
 
     override fun goToHousesList(context: Context) {

@@ -1,5 +1,7 @@
 package com.junyidark.igotanapp.di
 
+import android.content.ClipboardManager
+import android.content.Context
 import com.junyidark.igotanapp.data.apis.GameOfThronesQuotesApi
 import com.junyidark.igotanapp.data.apis.GameOfThronesQuotesApiServices
 import com.junyidark.igotanapp.data.apis.ThronesApi
@@ -20,6 +22,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -50,6 +53,16 @@ class RetrofitModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit.Builder = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+class UtilsModule {
+    @Singleton
+    @Provides
+    fun providesClipboardManager(@ApplicationContext context: Context): ClipboardManager {
+        return context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    }
 }
 
 @Module

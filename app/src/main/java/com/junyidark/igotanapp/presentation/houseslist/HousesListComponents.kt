@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -25,29 +26,45 @@ fun HouseListItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(
+    val defaultPadding = dimensionResource(id = R.dimen.padding_16dp)
+    Column(
+        verticalArrangement = Arrangement.spacedBy(defaultPadding),
         modifier = modifier
             .fillMaxWidth()
-            .padding(dimensionResource(id = R.dimen.padding_16dp)),
-        verticalAlignment = Alignment.CenterVertically
+            .padding(
+                top = defaultPadding,
+                start = defaultPadding,
+                end = defaultPadding,
+                bottom = 0.dp
+            )
     ) {
-        Image(
-            painter = painterResource(id = coatOfArms),
-            contentDescription = null,
-            modifier = Modifier.size(dimensionResource(id = R.dimen.list_item_size))
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(id = coatOfArms),
+                contentDescription = null,
+                modifier = Modifier.size(dimensionResource(id = R.dimen.list_item_size))
+            )
 
-        Text(
-            text = name,
-            style = MaterialTheme.typography.body1,
-            color = MaterialTheme.colors.onSecondary,
-            modifier = Modifier
-                .weight(1f)
-                .padding(horizontal = dimensionResource(id = R.dimen.padding_12dp))
-        )
+            Text(
+                text = name,
+                style = MaterialTheme.typography.body1,
+                color = MaterialTheme.colors.onSecondary,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = dimensionResource(id = R.dimen.padding_12dp))
+            )
 
-        SeeMoreIcon(onClick = onClick)
+            SeeMoreIcon(onClick = onClick)
+        }
+
+        Divider(
+            thickness = dimensionResource(id = R.dimen.divider_thickness),
+            color = MaterialTheme.colors.onPrimary
+        )
     }
+
 }
 
 @Preview(showBackground = true)

@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.junyidark.igotanapp.domain.models.Character
 import com.junyidark.igotanapp.domain.models.CharacterBasics
 import com.junyidark.igotanapp.presentation.characterslist.CharactersListViewModel.CharactersListNavigationViewState.GoToCharacterDetailsState
 import com.junyidark.igotanapp.presentation.characterslist.CharactersListViewModel.CharactersListNavigationViewState.OpenMenuState
@@ -65,7 +64,7 @@ class CharactersListActivity : ComponentActivity() {
         }
     }
 
-    private fun goToCharacterDetails(character: Character) {
+    private fun goToCharacterDetails(character: CharacterBasics) {
         router.goToCharacterDetails(context = this, character = character)
     }
 
@@ -83,8 +82,7 @@ class CharactersListActivity : ComponentActivity() {
                 Column {
                     Toolbar(onClickBack = { onBackPressed() }, onClickMenu = { viewModel.onMenuClicked() })
 
-                    val charactersList =
-                        charactersListViewModel.charactersListLiveData.observeAsState().value ?: emptyList()
+                    val charactersList = charactersListViewModel.charactersListLiveData.observeAsState().value ?: emptyList()
 
                     LazyColumn {
                         itemsIndexed(charactersList) { index, character ->

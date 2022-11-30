@@ -38,12 +38,12 @@ class CharactersRepository @Inject constructor(
     }
 
     override fun getCharacterDetails(firstName: String, onSuccess: (CharacterDetails) -> Unit) {
-        detailsApi.getCharacterDetails(firstName).enqueue(object : Callback<CharacterDetailsResponse> {
+        detailsApi.getCharacterDetails(firstName).enqueue(object : Callback<List<CharacterDetailsResponse>> {
             override fun onResponse(
-                call: Call<CharacterDetailsResponse>,
-                response: Response<CharacterDetailsResponse>
+                call: Call<List<CharacterDetailsResponse>>,
+                response: Response<List<CharacterDetailsResponse>>
             ) {
-                val body = response.body()
+                val body = response.body()?.firstOrNull()
 
                 if (body == null) {
                     onFailure(call, Throwable("CharacterDetailsResponse is null"))
@@ -52,7 +52,7 @@ class CharactersRepository @Inject constructor(
                 }
             }
 
-            override fun onFailure(call: Call<CharacterDetailsResponse>, t: Throwable) {
+            override fun onFailure(call: Call<List<CharacterDetailsResponse>>, t: Throwable) {
                 Log.e("Characters details api", "onFailure: getCharacterDetails ")
             }
 
@@ -74,7 +74,7 @@ class CharactersRepository @Inject constructor(
         val domainHouse = if (house == null) null else House(
             coatOfArms = -1,
             name = house.name,
-            members = house.members.map { it.name }
+            members = house.members?.map { it.name } ?: emptyList()
         )
         val domainQuotes = quotes.map { Quote(text = it) }
 

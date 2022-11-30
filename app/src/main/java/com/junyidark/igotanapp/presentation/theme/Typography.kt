@@ -38,4 +38,14 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 36.sp
     ),
+    h3 = TextStyle(
+        fontFamily = TrajanPro,
+        fontWeight = FontWeight.Normal,
+        fontSize = 24.sp
+    ),
+    h4 = TextStyle(
+        fontFamily = TrajanPro,
+        fontWeight = FontWeight.Normal,
+        fontSize = 20.sp
+    ),
 )

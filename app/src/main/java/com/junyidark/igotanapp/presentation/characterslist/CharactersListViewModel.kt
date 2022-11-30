@@ -1,10 +1,8 @@
 package com.junyidark.igotanapp.presentation.characterslist
 
 import androidx.lifecycle.*
-import com.junyidark.igotanapp.domain.models.Character
 import com.junyidark.igotanapp.domain.models.CharacterBasics
 import com.junyidark.igotanapp.domain.usecases.GetAllCharactersListUseCase
-import com.junyidark.igotanapp.domain.usecases.GetCharacterFullInfoUseCase
 import com.junyidark.igotanapp.presentation.characterslist.CharactersListActivity.Companion.EXTRA_CHARACTERS_RESULT_LIST
 import com.junyidark.igotanapp.presentation.characterslist.CharactersListViewModel.CharactersListNavigationViewState.GoToCharacterDetailsState
 import com.junyidark.igotanapp.presentation.characterslist.CharactersListViewModel.CharactersListNavigationViewState.OpenMenuState
@@ -15,8 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CharactersListViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getAllCharactersListUseCase: GetAllCharactersListUseCase,
-    private val getCharacterFullInfoUseCase: GetCharacterFullInfoUseCase
+    private val getAllCharactersListUseCase: GetAllCharactersListUseCase
 ) : ViewModel() {
 
     private val charactersListMutableLiveData = MutableLiveData<List<CharacterBasics>>()
@@ -32,6 +29,8 @@ class CharactersListViewModel @Inject constructor(
         ) ?: emptyList<CharacterBasics>()
     }
 
+    private var charactersList = emptyList<CharacterBasics>()
+
     fun loadList() {
         if (charactersResultList.isEmpty()) {
             loadAllCharacters()
@@ -44,16 +43,13 @@ class CharactersListViewModel @Inject constructor(
         viewModelScope.launch {
             getAllCharactersListUseCase.invoke(onSuccess = { list ->
                 charactersListMutableLiveData.postValue(list)
+                charactersList = list
             })
         }
     }
 
     fun onCharacterClicked(position: Int) {
-        viewModelScope.launch {
-            getCharacterFullInfoUseCase.invoke(charactersResultList[position]) { character ->
-                navigationMutableLiveData.postValue(GoToCharacterDetailsState(character))
-            }
-        }
+        navigationMutableLiveData.postValue(GoToCharacterDetailsState(charactersList[position]))
     }
 
     fun onMenuClicked() {
@@ -61,7 +57,7 @@ class CharactersListViewModel @Inject constructor(
     }
 
     sealed class CharactersListNavigationViewState {
-        data class GoToCharacterDetailsState(val character: Character) : CharactersListNavigationViewState()
+        data class GoToCharacterDetailsState(val character: CharacterBasics) : CharactersListNavigationViewState()
         object OpenMenuState : CharactersListNavigationViewState()
     }
 }

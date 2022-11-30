@@ -13,6 +13,14 @@
     <string name="home_copyright_author">JuliaRAlves</string>
     <string name="home_copyright_pt2">, mother of\nunfinished apps, Khaleesi of if-else conditions\nand queen of null safety</string>
 
+    <string name="character_details_quote_format">"\"%s\""</string>
+    <string name="character_details_title_label">Title:\u0020</string>
+    <string name="character_details_family_label">Family:\u0020</string>
+    <string name="character_details_quotes_section">Quotes</string>
+    <string name="character_details_toast_message">Quote copied to clipboard.</string>
+
+    <string name="house_details_members_section">Members</string>
+
     <string name="see_more">See more</string>
     <string name="toolbar_app_name_pt1">i\u0020</string>
     <string name="toolbar_app_name_pt2">GOT\u0020</string>

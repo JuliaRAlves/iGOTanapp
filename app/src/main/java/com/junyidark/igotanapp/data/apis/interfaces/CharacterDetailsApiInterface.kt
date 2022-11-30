@@ -4,5 +4,5 @@ import com.junyidark.igotanapp.data.models.CharacterDetailsResponse
 import retrofit2.Call
 
 interface CharacterDetailsApiInterface {
-    fun getCharacterDetails(firstName: String): Call<CharacterDetailsResponse>
+    fun getCharacterDetails(firstName: String): Call<List<CharacterDetailsResponse>>
 }

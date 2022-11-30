@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 interface GameOfThronesQuotesApiServices {
     @GET("v1/character/{slug}")
-    fun getCharacter(@Path("slug") slug: String): Call<CharacterDetailsResponse>
+    fun getCharacter(@Path("slug") slug: String): Call<List<CharacterDetailsResponse>>
 
     @GET("v1/houses")
     fun getAllHouses(): Call<List<HouseResponse>>
@@ -22,7 +22,7 @@ class GameOfThronesQuotesApi @Inject constructor(
 ) : CharacterDetailsApiInterface,
     HousesApiInterface {
 
-    override fun getCharacterDetails(firstName: String): Call<CharacterDetailsResponse> {
+    override fun getCharacterDetails(firstName: String): Call<List<CharacterDetailsResponse>> {
         return services.getCharacter(firstName)
     }
 

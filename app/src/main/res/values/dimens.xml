@@ -6,6 +6,9 @@
     <dimen name="padding_12dp">12dp</dimen>
     <dimen name="padding_16dp">16dp</dimen>
     <dimen name="padding_24dp">24dp</dimen>
+    <dimen name="padding_64dp">64dp</dimen>
     
     <dimen name="list_item_size">72dp</dimen>
+    <dimen name="details_photo_size">200dp</dimen>
+    <dimen name="divider_thickness">1dp</dimen>
 </resources>

@@ -7,7 +7,7 @@ class HouseResponse(
     val name: String,
 
     @SerializedName("members")
-    val members: List<MemberResponse> = emptyList()
+    val members: List<MemberResponse>? = emptyList()
 )
 
 class MemberResponse(

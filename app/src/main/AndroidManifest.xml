@@ -31,6 +31,8 @@
 
         <activity android:name=".presentation.houseslist.HousesListActivity" />
 
+        <activity android:name=".presentation.characterdetails.CharacterDetailsActivity" />
+
     </application>
 
 </manifest>
