@@ -6,7 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.junyidark.igotanapp.domain.models.House
 import com.junyidark.igotanapp.presentation.housedetails.HouseDetailsActivity.Companion.EXTRA_HOUSE
-import com.junyidark.igotanapp.presentation.housedetails.HouseDetailsViewModel.HouseDetailsNavigationViewState.OpenMenuState
+import com.junyidark.igotanapp.presentation.theme.Theme
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -18,8 +18,8 @@ class HouseDetailsViewModel @Inject constructor(
     private val houseDetailsMutableLiveData = MutableLiveData<House>()
     val houseDetailsLiveData: LiveData<House> = houseDetailsMutableLiveData
 
-    private val navigationMutableLiveData = MutableLiveData<HouseDetailsNavigationViewState>()
-    val navigationLiveData: LiveData<HouseDetailsNavigationViewState> = navigationMutableLiveData
+    private val themeMutableLiveData = MutableLiveData<Theme>()
+    val themeLiveData: LiveData<Theme> = themeMutableLiveData
 
     private val house by lazy {
         savedStateHandle.get<House>(
@@ -33,12 +33,8 @@ class HouseDetailsViewModel @Inject constructor(
         }
     }
 
-    fun onMenuClicked() {
-        navigationMutableLiveData.value = OpenMenuState
-    }
+    fun onSwitchThemeClicked() {
 
-    sealed class HouseDetailsNavigationViewState {
-        object OpenMenuState : HouseDetailsNavigationViewState()
     }
 
 }

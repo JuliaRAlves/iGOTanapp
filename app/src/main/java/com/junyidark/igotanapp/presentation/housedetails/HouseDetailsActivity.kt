@@ -6,16 +6,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -25,9 +26,9 @@ import com.junyidark.igotanapp.domain.models.House
 import com.junyidark.igotanapp.presentation.core.PhotoAndName
 import com.junyidark.igotanapp.presentation.core.Section
 import com.junyidark.igotanapp.presentation.core.Toolbar
-import com.junyidark.igotanapp.presentation.housedetails.HouseDetailsViewModel.HouseDetailsNavigationViewState.OpenMenuState
 import com.junyidark.igotanapp.presentation.theme.IGOTanappTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HouseDetailsActivity : ComponentActivity() {
@@ -50,21 +51,6 @@ class HouseDetailsActivity : ComponentActivity() {
         setContent {
             HouseDetails()
         }
-
-        setObservers()
-    }
-
-    private fun setObservers() {
-        viewModel.navigationLiveData.observe(this) { viewState ->
-            when (viewState) {
-                is OpenMenuState -> openMenu()
-                else -> {}
-            }
-        }
-    }
-
-    private fun openMenu() {
-
     }
 
     @Composable
@@ -76,43 +62,73 @@ class HouseDetailsActivity : ComponentActivity() {
             ) {
                 val defaultPadding = dimensionResource(id = R.dimen.padding_16dp)
 
-                Column {
-                    Toolbar(onClickBack = { onBackPressed() }, onClickMenu = { viewModel.onMenuClicked() })
+                val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+                val scope = rememberCoroutineScope()
 
-                    val house = houseDetailsViewModel.houseDetailsLiveData.observeAsState().value
-
-                    house?.let { house ->
-                        PhotoAndName(
-                            drawableRes = house.coatOfArms,
-                            name = house.name,
-                            modifier = Modifier.padding(
-                                top = dimensionResource(id = R.dimen.padding_64dp),
-                                start = defaultPadding,
-                                end = defaultPadding
+                ModalDrawer(
+                    drawerState = drawerState,
+                    drawerBackgroundColor = MaterialTheme.colors.secondary,
+                    drawerContentColor = MaterialTheme.colors.onSecondary,
+                    drawerElevation = dimensionResource(id = R.dimen.drawer_elevation),
+                    drawerContent = {
+                        Column {
+                            Text(
+                                text = stringResource(id = R.string.drawer_change_theme),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(dimensionResource(id = R.dimen.padding_16dp))
+                                    .clickable { houseDetailsViewModel.onSwitchThemeClicked() }
                             )
-                        )
-
-                        Section(
-                            title = stringResource(id = R.string.house_details_members_section),
-                            modifier = Modifier.padding(
-                                top = defaultPadding,
-                                start = defaultPadding,
-                                end = defaultPadding
+                            Text(
+                                text = stringResource(id = R.string.drawer_close),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(dimensionResource(id = R.dimen.padding_16dp))
+                                    .clickable { scope.launch { drawerState.close() } }
                             )
-                        )
+                        }
+                    }
+                ) {
+                    Column {
+                        Toolbar(
+                            onClickBack = { onBackPressed() },
+                            onClickMenu = { scope.launch { drawerState.open() } })
 
-                        LazyColumn(
-                            modifier = Modifier.padding(
-                                top = defaultPadding,
-                                start = defaultPadding,
-                                end = defaultPadding
-                            )
-                        ) {
-                            items(house.members) { member ->
-                                Text(
-                                    text = member,
-                                    modifier = Modifier.padding(bottom = defaultPadding)
+                        val house = houseDetailsViewModel.houseDetailsLiveData.observeAsState().value
+
+                        house?.let { house ->
+                            PhotoAndName(
+                                drawableRes = house.coatOfArms,
+                                name = house.name,
+                                modifier = Modifier.padding(
+                                    top = dimensionResource(id = R.dimen.padding_64dp),
+                                    start = defaultPadding,
+                                    end = defaultPadding
                                 )
+                            )
+
+                            Section(
+                                title = stringResource(id = R.string.house_details_members_section),
+                                modifier = Modifier.padding(
+                                    top = defaultPadding,
+                                    start = defaultPadding,
+                                    end = defaultPadding
+                                )
+                            )
+
+                            LazyColumn(
+                                modifier = Modifier.padding(
+                                    top = defaultPadding,
+                                    start = defaultPadding,
+                                    end = defaultPadding
+                                )
+                            ) {
+                                items(house.members) { member ->
+                                    Text(
+                                        text = member,
+                                        modifier = Modifier.padding(bottom = defaultPadding)
+                                    )
+                                }
                             }
                         }
                     }

@@ -6,23 +6,29 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.junyidark.igotanapp.R
 import com.junyidark.igotanapp.domain.models.House
 import com.junyidark.igotanapp.presentation.core.Toolbar
 import com.junyidark.igotanapp.presentation.houseslist.HousesListViewModel.HousesListViewState.GoToHouseDetailsState
-import com.junyidark.igotanapp.presentation.houseslist.HousesListViewModel.HousesListViewState.OpenMenuState
 import com.junyidark.igotanapp.presentation.navigation.RouterInterface
 import com.junyidark.igotanapp.presentation.theme.IGOTanappTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -54,17 +60,12 @@ class HousesListActivity : ComponentActivity() {
         viewModel.screenLiveData.observe(this) { viewState ->
             when (viewState) {
                 is GoToHouseDetailsState -> goToHouseDetails(viewState.house)
-                is OpenMenuState -> openMenu()
             }
         }
     }
 
     private fun goToHouseDetails(house: House) {
         router.goToHouseDetails(context = this, house = house)
-    }
-
-    private fun openMenu() {
-
     }
 
     @Composable
@@ -75,17 +76,48 @@ class HousesListActivity : ComponentActivity() {
                     color = MaterialTheme.colors.secondary,
                     modifier = Modifier.fillMaxHeight()
                 ) {
-                    Column {
-                        Toolbar(onClickBack = { onBackPressed() }, onClickMenu = { viewModel.onMenuClicked() })
+                    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+                    val scope = rememberCoroutineScope()
 
-                        val housesList = housesListViewModel.housesListLiveData.observeAsState().value ?: emptyList()
+                    ModalDrawer(
+                        drawerState = drawerState,
+                        drawerBackgroundColor = MaterialTheme.colors.secondary,
+                        drawerContentColor = MaterialTheme.colors.onSecondary,
+                        drawerElevation = dimensionResource(id = R.dimen.drawer_elevation),
+                        drawerContent = {
+                            Column {
+                                Text(
+                                    text = stringResource(id = R.string.drawer_change_theme),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(dimensionResource(id = R.dimen.padding_16dp))
+                                        .clickable { housesListViewModel.onSwitchThemeClicked() }
+                                )
+                                Text(
+                                    text = stringResource(id = R.string.drawer_close),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(dimensionResource(id = R.dimen.padding_16dp))
+                                        .clickable { scope.launch { drawerState.close() } }
+                                )
+                            }
+                        }
+                    ) {
+                        Column {
+                            Toolbar(
+                                onClickBack = { onBackPressed() },
+                                onClickMenu = { scope.launch { drawerState.open() } })
 
-                        LazyColumn {
-                            itemsIndexed(housesList) { index, house ->
-                                HouseListItem(
-                                    coatOfArms = house.coatOfArms,
-                                    name = house.name,
-                                    onClick = { viewModel.onHouseClicked(index) })
+                            val housesList =
+                                housesListViewModel.housesListLiveData.observeAsState().value ?: emptyList()
+
+                            LazyColumn {
+                                itemsIndexed(housesList) { index, house ->
+                                    HouseListItem(
+                                        coatOfArms = house.coatOfArms,
+                                        name = house.name,
+                                        onClick = { viewModel.onHouseClicked(index) })
+                                }
                             }
                         }
                     }

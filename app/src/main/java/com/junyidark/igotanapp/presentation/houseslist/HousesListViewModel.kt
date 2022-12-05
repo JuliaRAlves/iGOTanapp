@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.junyidark.igotanapp.domain.models.House
 import com.junyidark.igotanapp.domain.usecases.GetAllHousesListUseCase
 import com.junyidark.igotanapp.presentation.houseslist.HousesListViewModel.HousesListViewState.GoToHouseDetailsState
-import com.junyidark.igotanapp.presentation.houseslist.HousesListViewModel.HousesListViewState.OpenMenuState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,7 +26,7 @@ class HousesListViewModel @Inject constructor(
 
     fun loadList() {
         viewModelScope.launch {
-            getAllHousesListUseCase.invoke() { list ->
+            getAllHousesListUseCase.invoke { list ->
                 housesList = list
                 housesListMutableLiveData.postValue(list)
             }
@@ -38,12 +37,11 @@ class HousesListViewModel @Inject constructor(
         screenMutableLiveData.value = GoToHouseDetailsState(housesList[position])
     }
 
-    fun onMenuClicked() {
-        screenMutableLiveData.value = OpenMenuState
+    fun onSwitchThemeClicked() {
+
     }
 
     sealed class HousesListViewState {
         data class GoToHouseDetailsState(val house: House) : HousesListViewState()
-        object OpenMenuState : HousesListViewState()
     }
 }

@@ -11,4 +11,5 @@
     <dimen name="list_item_size">72dp</dimen>
     <dimen name="details_photo_size">200dp</dimen>
     <dimen name="divider_thickness">1dp</dimen>
+    <dimen name="drawer_elevation">10dp</dimen>
 </resources>

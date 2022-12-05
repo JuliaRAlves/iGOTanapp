@@ -5,7 +5,6 @@ import com.junyidark.igotanapp.domain.models.CharacterBasics
 import com.junyidark.igotanapp.domain.usecases.GetAllCharactersListUseCase
 import com.junyidark.igotanapp.presentation.characterslist.CharactersListActivity.Companion.EXTRA_CHARACTERS_RESULT_LIST
 import com.junyidark.igotanapp.presentation.characterslist.CharactersListViewModel.CharactersListNavigationViewState.GoToCharacterDetailsState
-import com.junyidark.igotanapp.presentation.characterslist.CharactersListViewModel.CharactersListNavigationViewState.OpenMenuState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -52,12 +51,10 @@ class CharactersListViewModel @Inject constructor(
         navigationMutableLiveData.postValue(GoToCharacterDetailsState(charactersList[position]))
     }
 
-    fun onMenuClicked() {
-        navigationMutableLiveData.value = OpenMenuState
+    fun onSwitchThemeClicked() {
     }
 
     sealed class CharactersListNavigationViewState {
         data class GoToCharacterDetailsState(val character: CharacterBasics) : CharactersListNavigationViewState()
-        object OpenMenuState : CharactersListNavigationViewState()
     }
 }

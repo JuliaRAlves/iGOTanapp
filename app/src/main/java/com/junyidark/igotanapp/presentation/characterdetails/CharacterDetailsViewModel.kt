@@ -6,7 +6,6 @@ import com.junyidark.igotanapp.domain.models.CharacterBasics
 import com.junyidark.igotanapp.domain.usecases.GetCharacterFullInfoUseCaseInterface
 import com.junyidark.igotanapp.presentation.characterdetails.CharacterDetailsActivity.Companion.EXTRA_CHARACTER_BASICS
 import com.junyidark.igotanapp.presentation.characterdetails.CharacterDetailsViewModel.CharacterDetailsActionsViewState.CopiedQuoteState
-import com.junyidark.igotanapp.presentation.characterdetails.CharacterDetailsViewModel.CharacterDetailsNavigationViewState.OpenMenuState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,9 +18,6 @@ class CharacterDetailsViewModel @Inject constructor(
 
     private val characterDetailsMutableLiveData = MutableLiveData<Character>()
     val characterDetailsLiveData: LiveData<Character> = characterDetailsMutableLiveData
-
-    private val navigationMutableLiveData = MutableLiveData<CharacterDetailsNavigationViewState>()
-    val navigationLiveData: LiveData<CharacterDetailsNavigationViewState> = navigationMutableLiveData
 
     private val actionsMutableLiveData = MutableLiveData<CharacterDetailsActionsViewState>()
     val actionsLiveData: LiveData<CharacterDetailsActionsViewState> = actionsMutableLiveData
@@ -46,16 +42,12 @@ class CharacterDetailsViewModel @Inject constructor(
         }
     }
 
-    fun onMenuClicked() {
-        navigationMutableLiveData.value = OpenMenuState
+    fun onSwitchThemeClicked() {
+
     }
 
     fun onQuoteCopied(quote: String) {
         actionsMutableLiveData.postValue(CopiedQuoteState("Quote", quote))
-    }
-
-    sealed class CharacterDetailsNavigationViewState {
-        object OpenMenuState : CharacterDetailsNavigationViewState()
     }
 
     sealed class CharacterDetailsActionsViewState {

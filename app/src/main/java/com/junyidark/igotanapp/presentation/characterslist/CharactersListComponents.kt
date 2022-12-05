@@ -19,6 +19,7 @@ import com.junyidark.igotanapp.R
 import com.junyidark.igotanapp.presentation.core.SeeMoreIcon
 import com.junyidark.igotanapp.presentation.core.Toolbar
 import com.junyidark.igotanapp.presentation.theme.IGOTanappTheme
+import com.junyidark.igotanapp.presentation.theme.Theme
 
 @Composable
 fun CharacterListItem(
@@ -99,7 +100,7 @@ private fun IronHandComponentsPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun DeepRiversComponentsPreview() {
-    IGOTanappTheme(deepRiversEnabled = true) {
+    IGOTanappTheme(theme = Theme.DEEP_RIVERS) {
         Column(Modifier.background(MaterialTheme.colors.secondary)) {
             Toolbar(modifier = Modifier.padding(bottom = 16.dp), onClickBack = { }, onClickMenu = { })
             CharacterListItem(
@@ -115,7 +116,7 @@ private fun DeepRiversComponentsPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun IntoTheSunComponentsPreview() {
-    IGOTanappTheme(intoTheSunEnabled = true) {
+    IGOTanappTheme(theme = Theme.INTO_THE_SUN) {
         Column(Modifier.background(MaterialTheme.colors.secondary)) {
             Toolbar(modifier = Modifier.padding(bottom = 16.dp), onClickBack = { }, onClickMenu = { })
             CharacterListItem(

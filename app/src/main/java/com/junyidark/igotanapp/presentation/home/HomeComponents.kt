@@ -23,6 +23,7 @@ import com.junyidark.igotanapp.R
 import com.junyidark.igotanapp.presentation.core.formattedAppTitle
 import com.junyidark.igotanapp.presentation.theme.IGOTanappTheme
 import com.junyidark.igotanapp.presentation.theme.Shapes
+import com.junyidark.igotanapp.presentation.theme.Theme
 
 @Composable
 fun Title() {
@@ -179,7 +180,7 @@ private fun IronHandComponentsPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun DeepRiversComponentsPreview() {
-    IGOTanappTheme(deepRiversEnabled = true) {
+    IGOTanappTheme(theme = Theme.DEEP_RIVERS) {
         Column(Modifier.background(MaterialTheme.colors.background)) {
             Title()
             Spacer(modifier = Modifier.heightIn(12.dp))
@@ -197,7 +198,7 @@ private fun DeepRiversComponentsPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun IntoTheSunComponentsPreview() {
-    IGOTanappTheme(intoTheSunEnabled = true) {
+    IGOTanappTheme(theme = Theme.INTO_THE_SUN) {
         Column(Modifier.background(MaterialTheme.colors.background)) {
             Title()
             Spacer(modifier = Modifier.heightIn(20.dp))

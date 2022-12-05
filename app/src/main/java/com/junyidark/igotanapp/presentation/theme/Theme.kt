@@ -1,11 +1,8 @@
 package com.junyidark.igotanapp.presentation.theme
 
-import android.app.Activity
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalView
 
 private val IronHandPalette = lightColors(
     background = CrackedPepper,
@@ -33,14 +30,13 @@ private val DeepRiversPalette = lightColors(
 
 @Composable
 fun IGOTanappTheme(
-    intoTheSunEnabled: Boolean = false,
-    deepRiversEnabled: Boolean = false,
+    theme: Theme = Theme.IRON_HAND,
     content: @Composable () -> Unit
 ) {
-    val colors = when {
-        intoTheSunEnabled -> IntoTheSunPalette
-        deepRiversEnabled -> DeepRiversPalette
-        else -> IronHandPalette
+    val colors = when (theme) {
+        Theme.INTO_THE_SUN -> IntoTheSunPalette
+        Theme.DEEP_RIVERS -> DeepRiversPalette
+        Theme.IRON_HAND -> IronHandPalette
     }
 
 //    val view = LocalView.current
@@ -53,4 +49,10 @@ fun IGOTanappTheme(
         shapes = Shapes,
         content = content
     )
+}
+
+enum class Theme {
+    INTO_THE_SUN,
+    DEEP_RIVERS,
+    IRON_HAND
 }
