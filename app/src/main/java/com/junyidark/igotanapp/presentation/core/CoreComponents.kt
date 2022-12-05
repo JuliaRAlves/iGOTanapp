@@ -21,6 +21,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
+import androidx.compose.ui.text.style.TextAlign
 import coil.compose.rememberAsyncImagePainter
 import com.junyidark.igotanapp.R
 
@@ -128,7 +129,8 @@ fun SeeMoreIcon(
 
 @Composable
 fun PhotoAndName(
-    photoUrl: String,
+    photoUrl: String? = null,
+    drawableRes: Int? = null,
     name: String,
     modifier: Modifier = Modifier
 ) {
@@ -137,8 +139,11 @@ fun PhotoAndName(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxWidth()
     ) {
+        val painter = if (drawableRes != null) painterResource(id = drawableRes)
+        else rememberAsyncImagePainter(model = photoUrl)
+
         Image(
-            painter = rememberAsyncImagePainter(model = photoUrl),
+            painter = painter,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -148,6 +153,7 @@ fun PhotoAndName(
 
         Text(
             text = name,
+            textAlign = TextAlign.Center,
             style = MaterialTheme.typography.h3,
             color = MaterialTheme.colors.primary
         )

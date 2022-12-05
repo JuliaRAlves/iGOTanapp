@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">i GOT an app</string>
 
+    <string name="author_github_url">https://github.com/JuliaRAlves</string>
+
     <string name="home_app_name_pt1">i\u0020</string>
     <string name="home_app_name_pt2">GOT\n</string>
     <string name="home_app_name_pt3">an app</string>

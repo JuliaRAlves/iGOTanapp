@@ -33,6 +33,8 @@
 
         <activity android:name=".presentation.characterdetails.CharacterDetailsActivity" />
 
+        <activity android:name=".presentation.housedetails.HouseDetailsActivity" />
+
     </application>
 
 </manifest>

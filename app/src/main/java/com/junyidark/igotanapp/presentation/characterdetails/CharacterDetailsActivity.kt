@@ -40,9 +40,6 @@ class CharacterDetailsActivity : ComponentActivity() {
     private val viewModel by viewModels<CharacterDetailsViewModel>()
 
     @Inject
-    lateinit var router: RouterInterface
-
-    @Inject
     lateinit var clipboardManager: ClipboardManager
 
     companion object {

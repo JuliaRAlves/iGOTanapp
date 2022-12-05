@@ -3,20 +3,17 @@ package com.junyidark.igotanapp.presentation.navigation
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.junyidark.igotanapp.domain.models.Character
+import com.junyidark.igotanapp.R
 import com.junyidark.igotanapp.domain.models.CharacterBasics
 import com.junyidark.igotanapp.domain.models.House
 import com.junyidark.igotanapp.presentation.characterdetails.CharacterDetailsActivity
 import com.junyidark.igotanapp.presentation.characterslist.CharactersListActivity
 import com.junyidark.igotanapp.presentation.home.HomeActivity
+import com.junyidark.igotanapp.presentation.housedetails.HouseDetailsActivity
 import com.junyidark.igotanapp.presentation.houseslist.HousesListActivity
 import javax.inject.Inject
 
 class Router @Inject constructor() : RouterInterface {
-
-    companion object {
-        private const val AUTHOR_GITHUB_URL = "https://github.com/JuliaRAlves"
-    }
 
     override fun goToHome(context: Context) {
         val pageIntent = HomeActivity.getIntent(context)
@@ -39,11 +36,13 @@ class Router @Inject constructor() : RouterInterface {
     }
 
     override fun goToHouseDetails(context: Context, house: House) {
-        //TODO criar rota
+        val pageIntent = HouseDetailsActivity.getIntent(context, house)
+        context.startActivity(pageIntent)
     }
 
     override fun goToAuthor(context: Context) {
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(AUTHOR_GITHUB_URL))
+        val link = context.getString(R.string.author_github_url)
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
         context.startActivity(browserIntent)
     }
 }
