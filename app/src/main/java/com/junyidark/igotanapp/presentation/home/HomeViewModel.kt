@@ -30,8 +30,9 @@ class HomeViewModel @Inject constructor(
     fun onSearchClicked() {
         viewModelScope.launch {
             if (query.isNotEmpty()) {
-                val list = searchCharacterByNameUseCase.invoke(query)
-                screenMutableLiveData.postValue(LoadedResultState(list))
+                searchCharacterByNameUseCase.invoke(query) { list ->
+                    screenMutableLiveData.postValue(LoadedResultState(list))
+                }
             }
         }
     }
