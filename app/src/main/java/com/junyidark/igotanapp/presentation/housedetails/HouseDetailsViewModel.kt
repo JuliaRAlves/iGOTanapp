@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.junyidark.igotanapp.domain.models.House
+import com.junyidark.igotanapp.domain.usecases.GetThemeUseCaseInterface
+import com.junyidark.igotanapp.domain.usecases.SetThemeUseCaseInterface
 import com.junyidark.igotanapp.presentation.housedetails.HouseDetailsActivity.Companion.EXTRA_HOUSE
 import com.junyidark.igotanapp.presentation.theme.Theme
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +14,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HouseDetailsViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    private val getThemeUseCase: GetThemeUseCaseInterface,
+    private val setThemeUseCase: SetThemeUseCaseInterface
 ) : ViewModel() {
 
     private val houseDetailsMutableLiveData = MutableLiveData<House>()
@@ -34,7 +38,16 @@ class HouseDetailsViewModel @Inject constructor(
     }
 
     fun onSwitchThemeClicked() {
+        setThemeUseCase.invoke()
+        themeMutableLiveData.value = getThemeUseCase.invoke()
+    }
 
+    fun getTheme(): Theme {
+        return getThemeUseCase.invoke()
+    }
+
+    fun updateTheme() {
+        themeMutableLiveData.value = getThemeUseCase.invoke()
     }
 
 }

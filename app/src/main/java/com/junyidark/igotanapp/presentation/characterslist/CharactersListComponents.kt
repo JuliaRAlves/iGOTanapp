@@ -84,7 +84,7 @@ fun CharacterListItem(
 @Preview(showBackground = true)
 @Composable
 private fun IronHandComponentsPreview() {
-    IGOTanappTheme {
+    IGOTanappTheme(theme = Theme.IRON_HAND) {
         Column(Modifier.background(MaterialTheme.colors.secondary)) {
             Toolbar(modifier = Modifier.padding(bottom = 16.dp), onClickBack = { }, onClickMenu = { })
             CharacterListItem(

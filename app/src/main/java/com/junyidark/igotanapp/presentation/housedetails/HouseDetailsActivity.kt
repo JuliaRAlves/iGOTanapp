@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -27,6 +28,7 @@ import com.junyidark.igotanapp.presentation.core.PhotoAndName
 import com.junyidark.igotanapp.presentation.core.Section
 import com.junyidark.igotanapp.presentation.core.Toolbar
 import com.junyidark.igotanapp.presentation.theme.IGOTanappTheme
+import com.junyidark.igotanapp.presentation.theme.Theme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -53,9 +55,16 @@ class HouseDetailsActivity : ComponentActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateTheme()
+    }
+
     @Composable
     private fun HouseDetails(houseDetailsViewModel: HouseDetailsViewModel = viewModel()) {
-        IGOTanappTheme {
+        val theme: Theme by viewModel.themeLiveData.observeAsState(initial = viewModel.getTheme())
+
+        IGOTanappTheme(theme) {
             Surface(
                 color = MaterialTheme.colors.secondary,
                 modifier = Modifier.fillMaxHeight()

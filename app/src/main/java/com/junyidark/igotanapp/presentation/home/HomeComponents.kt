@@ -162,7 +162,7 @@ fun formattedCopyright(): AnnotatedString {
 @Preview(showBackground = true)
 @Composable
 private fun IronHandComponentsPreview() {
-    IGOTanappTheme {
+    IGOTanappTheme(theme = Theme.IRON_HAND) {
         Column(Modifier.background(MaterialTheme.colors.background)) {
             Title()
             Spacer(modifier = Modifier.heightIn(12.dp))

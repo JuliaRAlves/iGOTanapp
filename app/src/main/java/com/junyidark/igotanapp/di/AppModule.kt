@@ -70,6 +70,12 @@ class UtilsModule {
 abstract class AppViewModelModule {
 
     companion object {
+        private const val APP_SHARED_PREFERENCES = "APP_SHARED_PREFERENCES"
+
+        @Provides
+        fun providesSharedPreferences(@ApplicationContext context: Context) =
+            context.getSharedPreferences(APP_SHARED_PREFERENCES, Context.MODE_PRIVATE)
+
         @Provides
         fun providesThronesApiServices(retrofit: Retrofit.Builder): ThronesApiServices {
             return retrofit.baseUrl("https://thronesapi.com/")
@@ -109,6 +115,16 @@ abstract class AppViewModelModule {
     abstract fun bindGetHouseCoatOfArmsUseCase(
         getHouseCoatOfArmsUseCase: GetHouseCoatOfArmsUseCase
     ): GetHouseCoatOfArmsUseCaseInterface
+
+    @Binds
+    abstract fun bindSetThemesUseCase(
+        setThemeUseCase: SetThemeUseCase
+    ): SetThemeUseCaseInterface
+
+    @Binds
+    abstract fun bindGetThemesUseCase(
+        getThemeUseCase: GetThemeUseCase
+    ): GetThemeUseCaseInterface
 
     @Binds
     abstract fun bindCharactersRepository(

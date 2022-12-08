@@ -10,6 +10,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -20,6 +22,7 @@ import com.junyidark.igotanapp.R
 import com.junyidark.igotanapp.domain.models.CharacterBasics
 import com.junyidark.igotanapp.presentation.navigation.RouterInterface
 import com.junyidark.igotanapp.presentation.theme.IGOTanappTheme
+import com.junyidark.igotanapp.presentation.theme.Theme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -43,6 +46,11 @@ class HomeActivity : ComponentActivity() {
             Home()
         }
         setObservers()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateTheme()
     }
 
     private fun setObservers() {
@@ -71,42 +79,44 @@ class HomeActivity : ComponentActivity() {
     private fun goToResultList(searchResult: List<CharacterBasics>) {
         router.goToCharactersList(context = this, resultList = searchResult)
     }
-}
 
-@Composable
-private fun Home(homeViewModel: HomeViewModel = viewModel()) {
-    IGOTanappTheme {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            MaterialTheme.colors.secondary,
-                            MaterialTheme.colors.background
-                        )
-                    )
-                )
-        ) {
-            Column(
-                verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally,
+    @Composable
+    private fun Home(homeViewModel: HomeViewModel = viewModel()) {
+        val theme: Theme by viewModel.themeLiveData.observeAsState(initial = Theme.IRON_HAND)
+
+        IGOTanappTheme(theme) {
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(all = dimensionResource(id = R.dimen.padding_16dp))
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                MaterialTheme.colors.secondary,
+                                MaterialTheme.colors.background
+                            )
+                        )
+                    )
             ) {
-                Spacer(Modifier.heightIn(dimensionResource(id = R.dimen.padding_24dp)))
-                Title()
                 Column(
+                    verticalArrangement = Arrangement.SpaceBetween,
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(all = dimensionResource(id = R.dimen.padding_16dp))
                 ) {
-                    SearchBar { homeViewModel.onTextChanged(it) }
-                    SearchButton { homeViewModel.onSearchClicked() }
-                    CallToPage(page = stringResource(id = R.string.home_all_characters_page)) { homeViewModel.onAllCharactersClicked() }
-                    CallToPage(page = stringResource(id = R.string.home_the_houses_page)) { homeViewModel.onTheHousesClicked() }
+                    Spacer(Modifier.heightIn(dimensionResource(id = R.dimen.padding_24dp)))
+                    Title()
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        SearchBar { homeViewModel.onTextChanged(it) }
+                        SearchButton { homeViewModel.onSearchClicked() }
+                        CallToPage(page = stringResource(id = R.string.home_all_characters_page)) { homeViewModel.onAllCharactersClicked() }
+                        CallToPage(page = stringResource(id = R.string.home_the_houses_page)) { homeViewModel.onTheHousesClicked() }
+                    }
+                    Copyright { homeViewModel.onAuthorNameClicked() }
                 }
-                Copyright { homeViewModel.onAuthorNameClicked() }
             }
         }
     }
