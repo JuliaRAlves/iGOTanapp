@@ -12,4 +12,6 @@
     <dimen name="details_photo_size">200dp</dimen>
     <dimen name="divider_thickness">1dp</dimen>
     <dimen name="drawer_elevation">10dp</dimen>
+    <dimen name="loading_indicator_size">100dp</dimen>
+    <dimen name="loading_circle_width">4dp</dimen>
 </resources>

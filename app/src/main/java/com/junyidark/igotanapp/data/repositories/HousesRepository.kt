@@ -15,7 +15,7 @@ class HousesRepository @Inject constructor(
     private val api: HousesApiInterface,
     private val getHouseCoatOfArmsUseCase: GetHouseCoatOfArmsUseCaseInterface
 ) : HousesRepositoryInterface {
-    override fun getAllHouses(onSuccess: (List<House>) -> Unit) {
+    override fun getAllHouses(onSuccess: (List<House>) -> Unit, onError: () -> Unit) {
         api.getAllHouses().enqueue(object : Callback<List<HouseResponse>> {
             override fun onResponse(
                 call: Call<List<HouseResponse>>,
@@ -26,6 +26,7 @@ class HousesRepository @Inject constructor(
 
             override fun onFailure(call: Call<List<HouseResponse>>, t: Throwable) {
                 Log.e("Houses api", "onFailure: getAllHouses ")
+                onError()
             }
 
         })

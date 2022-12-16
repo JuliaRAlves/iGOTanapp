@@ -25,6 +25,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.junyidark.igotanapp.R
 import com.junyidark.igotanapp.domain.models.CharacterBasics
 import com.junyidark.igotanapp.presentation.characterslist.CharactersListViewModel.CharactersListNavigationViewState.GoToCharacterDetailsState
+import com.junyidark.igotanapp.presentation.core.ErrorScreen
+import com.junyidark.igotanapp.presentation.core.LoadingScreen
 import com.junyidark.igotanapp.presentation.core.Toolbar
 import com.junyidark.igotanapp.presentation.navigation.RouterInterface
 import com.junyidark.igotanapp.presentation.theme.IGOTanappTheme
@@ -91,45 +93,54 @@ class CharactersListActivity : ComponentActivity() {
                 val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
                 val scope = rememberCoroutineScope()
 
-                ModalDrawer(
-                    drawerState = drawerState,
-                    drawerBackgroundColor = MaterialTheme.colors.secondary,
-                    drawerContentColor = MaterialTheme.colors.onSecondary,
-                    drawerElevation = dimensionResource(id = R.dimen.drawer_elevation),
-                    drawerContent = {
-                        Column {
-                            Text(
-                                text = stringResource(id = R.string.drawer_change_theme),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(dimensionResource(id = R.dimen.padding_16dp))
-                                    .clickable { charactersListViewModel.onSwitchThemeClicked() }
-                            )
-                            Text(
-                                text = stringResource(id = R.string.drawer_close),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(dimensionResource(id = R.dimen.padding_16dp))
-                                    .clickable { scope.launch { drawerState.close() } }
-                            )
-                        }
-                    }
-                ) {
-                    Column {
-                        Toolbar(
-                            onClickBack = { onBackPressed() },
-                            onClickMenu = { scope.launch { drawerState.open() } })
+                val isLoading = charactersListViewModel.isLoadingLiveData.observeAsState().value ?: false
+                val isError = charactersListViewModel.isOnErrorLiveData.observeAsState().value ?: false
 
-                        val charactersList =
-                            charactersListViewModel.charactersListLiveData.observeAsState().value ?: emptyList()
+                when {
+                    isLoading -> LoadingScreen()
+                    isError -> ErrorScreen()
+                    else -> {
+                        ModalDrawer(
+                            drawerState = drawerState,
+                            drawerBackgroundColor = MaterialTheme.colors.secondary,
+                            drawerContentColor = MaterialTheme.colors.onSecondary,
+                            drawerElevation = dimensionResource(id = R.dimen.drawer_elevation),
+                            drawerContent = {
+                                Column {
+                                    Text(
+                                        text = stringResource(id = R.string.drawer_change_theme),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(dimensionResource(id = R.dimen.padding_16dp))
+                                            .clickable { charactersListViewModel.onSwitchThemeClicked() }
+                                    )
+                                    Text(
+                                        text = stringResource(id = R.string.drawer_close),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(dimensionResource(id = R.dimen.padding_16dp))
+                                            .clickable { scope.launch { drawerState.close() } }
+                                    )
+                                }
+                            }
+                        ) {
+                            Column {
+                                Toolbar(
+                                    onClickBack = { onBackPressed() },
+                                    onClickMenu = { scope.launch { drawerState.open() } })
 
-                        LazyColumn {
-                            itemsIndexed(charactersList) { index, character ->
-                                CharacterListItem(
-                                    photoUrl = character.photo,
-                                    name = character.name,
-                                    title = character.title,
-                                    onClick = { viewModel.onCharacterClicked(index) })
+                                val charactersList =
+                                    charactersListViewModel.charactersListLiveData.observeAsState().value ?: emptyList()
+
+                                LazyColumn {
+                                    itemsIndexed(charactersList) { index, character ->
+                                        CharacterListItem(
+                                            photoUrl = character.photo,
+                                            name = character.name,
+                                            title = character.title,
+                                            onClick = { viewModel.onCharacterClicked(index) })
+                                    }
+                                }
                             }
                         }
                     }

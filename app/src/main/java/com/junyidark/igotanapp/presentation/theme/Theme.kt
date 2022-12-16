@@ -12,7 +12,9 @@ private val IronHandPalette = lightColors(
     primary = YellowCorn,
     secondary = DeepAubergine,
     onSecondary = Sterling,
-    onPrimary = RegularBlack
+    onPrimary = RegularBlack,
+    error = LightCyan,
+    onError = SteelBlue
 )
 
 private val IntoTheSunPalette = lightColors(
@@ -20,7 +22,9 @@ private val IntoTheSunPalette = lightColors(
     primary = Sunglow,
     secondary = RedOchre,
     onSecondary = GreenHighlands,
-    onPrimary = RegularBlack
+    onPrimary = RegularBlack,
+    error = LightCyan,
+    onError = SteelBlue
 )
 
 private val DeepRiversPalette = lightColors(
@@ -28,7 +32,9 @@ private val DeepRiversPalette = lightColors(
     primary = RoycroftMistGray,
     secondary = Bosporus,
     onSecondary = TimidBlue,
-    onPrimary = RegularBlack
+    onPrimary = RegularBlack,
+    error = LightCyan,
+    onError = SteelBlue
 )
 
 @Composable

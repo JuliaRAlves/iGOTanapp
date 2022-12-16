@@ -29,6 +29,12 @@ class CharactersListViewModel @Inject constructor(
     private val themeMutableLiveData = MutableLiveData<Theme>()
     val themeLiveData: LiveData<Theme> = themeMutableLiveData
 
+    private val isLoadingMutableLiveData = MutableLiveData<Boolean>()
+    val isLoadingLiveData: LiveData<Boolean> = isLoadingMutableLiveData
+
+    private val isOnErrorMutableLiveData = MutableLiveData(false)
+    val isOnErrorLiveData: LiveData<Boolean> = isOnErrorMutableLiveData
+
 
     private val charactersResultList by lazy {
         savedStateHandle.get<List<CharacterBasics>>(
@@ -40,6 +46,7 @@ class CharactersListViewModel @Inject constructor(
 
     fun loadList() {
         if (charactersResultList.isEmpty()) {
+            isLoadingMutableLiveData.value = true
             loadAllCharacters()
         } else {
             charactersListMutableLiveData.value = charactersResultList
@@ -48,10 +55,14 @@ class CharactersListViewModel @Inject constructor(
 
     private fun loadAllCharacters() {
         viewModelScope.launch {
-            getAllCharactersListUseCase.invoke(onSuccess = { list ->
-                charactersListMutableLiveData.postValue(list)
-                charactersList = list
-            })
+            getAllCharactersListUseCase.invoke(
+                onSuccess = { list ->
+                    charactersListMutableLiveData.postValue(list)
+                    charactersList = list
+                    isLoadingMutableLiveData.postValue(false)
+                },
+                onError = { isOnErrorMutableLiveData.postValue(true) }
+            )
         }
     }
 

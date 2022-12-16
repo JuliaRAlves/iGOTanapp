@@ -1,20 +1,25 @@
 package com.junyidark.igotanapp.presentation.core
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
@@ -22,8 +27,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.junyidark.igotanapp.R
+import com.junyidark.igotanapp.presentation.theme.IGOTanappTheme
+import com.junyidark.igotanapp.presentation.theme.Theme
 
 @Composable
 fun Toolbar(
@@ -129,10 +139,10 @@ fun SeeMoreIcon(
 
 @Composable
 fun PhotoAndName(
+    modifier: Modifier = Modifier,
     photoUrl: String? = null,
     drawableRes: Int? = null,
-    name: String,
-    modifier: Modifier = Modifier
+    name: String
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_16dp)),
@@ -180,5 +190,94 @@ fun Section(
             thickness = dimensionResource(id = R.dimen.divider_thickness),
             color = MaterialTheme.colors.onPrimary
         )
+    }
+}
+
+@Composable
+fun LoadingScreen(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        LoadingAnimation()
+    }
+}
+
+@Composable
+private fun LoadingAnimation(
+    indicatorSize: Dp = dimensionResource(id = R.dimen.loading_indicator_size),
+    circleColors: List<Color> = listOf(
+        MaterialTheme.colors.secondary,
+        MaterialTheme.colors.background,
+        MaterialTheme.colors.primary,
+        MaterialTheme.colors.onSecondary,
+        MaterialTheme.colors.primary,
+        MaterialTheme.colors.background,
+        MaterialTheme.colors.secondary
+    ),
+    animationDuration: Int = 360
+) {
+
+    val infiniteTransition = rememberInfiniteTransition()
+
+    val rotateAnimation by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = animationDuration,
+                easing = LinearEasing
+            )
+        )
+    )
+
+    CircularProgressIndicator(
+        modifier = Modifier
+            .size(size = indicatorSize)
+            .rotate(degrees = rotateAnimation)
+            .border(
+                width = dimensionResource(id = R.dimen.loading_circle_width),
+                brush = Brush.sweepGradient(circleColors),
+                shape = CircleShape
+            ),
+        progress = 1f,
+        strokeWidth = 1.dp,
+        color = MaterialTheme.colors.background // Set background color
+    )
+}
+
+@Composable
+fun ErrorScreen(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.error),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.ice_king),
+            contentDescription = null,
+            modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.padding_8dp))
+        )
+        Text(
+            text = stringResource(id = R.string.error_message),
+            color = MaterialTheme.colors.onError,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_16dp))
+        )
+    }
+}
+
+@Preview
+@Composable
+fun Aa() {
+    IGOTanappTheme(theme = Theme.IRON_HAND) {
+        ErrorScreen()
     }
 }

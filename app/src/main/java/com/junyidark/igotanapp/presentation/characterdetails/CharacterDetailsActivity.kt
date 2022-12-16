@@ -28,9 +28,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.junyidark.igotanapp.R
 import com.junyidark.igotanapp.domain.models.CharacterBasics
 import com.junyidark.igotanapp.presentation.characterdetails.CharacterDetailsViewModel.CharacterDetailsActionsViewState.CopiedQuoteState
-import com.junyidark.igotanapp.presentation.core.PhotoAndName
-import com.junyidark.igotanapp.presentation.core.Section
-import com.junyidark.igotanapp.presentation.core.Toolbar
+import com.junyidark.igotanapp.presentation.core.*
 import com.junyidark.igotanapp.presentation.theme.IGOTanappTheme
 import com.junyidark.igotanapp.presentation.theme.Theme
 import dagger.hilt.android.AndroidEntryPoint
@@ -100,91 +98,101 @@ class CharacterDetailsActivity : ComponentActivity() {
                 val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
                 val scope = rememberCoroutineScope()
 
-                ModalDrawer(
-                    drawerState = drawerState,
-                    drawerBackgroundColor = MaterialTheme.colors.secondary,
-                    drawerContentColor = MaterialTheme.colors.onSecondary,
-                    drawerElevation = dimensionResource(id = R.dimen.drawer_elevation),
-                    drawerContent = {
-                        Column {
-                            Text(
-                                text = stringResource(id = R.string.drawer_change_theme),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(dimensionResource(id = R.dimen.padding_16dp))
-                                    .clickable { characterDetailsViewModel.onSwitchThemeClicked() }
-                            )
-                            Text(
-                                text = stringResource(id = R.string.drawer_close),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(dimensionResource(id = R.dimen.padding_16dp))
-                                    .clickable { scope.launch { drawerState.close() } }
-                            )
-                        }
-                    }
-                ) {
-                    Column {
-                        Toolbar(
-                            onClickBack = { onBackPressed() },
-                            onClickMenu = { scope.launch { drawerState.open() } })
+                val isLoading = characterDetailsViewModel.isLoadingLiveData.observeAsState().value ?: false
+                val isError = characterDetailsViewModel.isOnErrorLiveData.observeAsState().value ?: false
 
-                        val character = characterDetailsViewModel.characterDetailsLiveData.observeAsState().value
-
-                        character?.let { character ->
-                            PhotoAndName(
-                                photoUrl = character.photo,
-                                name = character.name,
-                                modifier = Modifier.padding(
-                                    top = dimensionResource(id = R.dimen.padding_64dp),
-                                    start = defaultPadding,
-                                    end = defaultPadding
-                                )
-                            )
-
-                            LabelContent(
-                                label = stringResource(id = R.string.character_details_title_label),
-                                content = character.title,
-                                modifier = Modifier.padding(
-                                    top = dimensionResource(id = R.dimen.padding_24dp),
-                                    start = defaultPadding,
-                                    end = defaultPadding
-                                )
-                            )
-                            LabelContent(
-                                label = stringResource(id = R.string.character_details_family_label),
-                                content = character.house.name,
-                                modifier = Modifier.padding(
-                                    top = dimensionResource(id = R.dimen.padding_4dp),
-                                    start = defaultPadding,
-                                    end = defaultPadding
-                                )
-                            )
-
-                            Section(
-                                title = stringResource(id = R.string.character_details_quotes_section),
-                                modifier = Modifier.padding(
-                                    top = defaultPadding,
-                                    start = defaultPadding,
-                                    end = defaultPadding
-                                )
-                            )
-
-                            LazyColumn(
-                                modifier = Modifier.padding(
-                                    top = defaultPadding,
-                                    start = defaultPadding,
-                                    end = defaultPadding
-                                )
-                            ) {
-                                items(character.quotes) { quote ->
-                                    QuoteCopy(
-                                        text = quote.text,
-                                        onCopyClicked = {
-                                            viewModel.onQuoteCopied(it)
-                                        },
-                                        modifier = Modifier.padding(bottom = defaultPadding)
+                when {
+                    isLoading -> LoadingScreen()
+                    isError -> ErrorScreen()
+                    else -> {
+                        ModalDrawer(
+                            drawerState = drawerState,
+                            drawerBackgroundColor = MaterialTheme.colors.secondary,
+                            drawerContentColor = MaterialTheme.colors.onSecondary,
+                            drawerElevation = dimensionResource(id = R.dimen.drawer_elevation),
+                            drawerContent = {
+                                Column {
+                                    Text(
+                                        text = stringResource(id = R.string.drawer_change_theme),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(dimensionResource(id = R.dimen.padding_16dp))
+                                            .clickable { characterDetailsViewModel.onSwitchThemeClicked() }
                                     )
+                                    Text(
+                                        text = stringResource(id = R.string.drawer_close),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(dimensionResource(id = R.dimen.padding_16dp))
+                                            .clickable { scope.launch { drawerState.close() } }
+                                    )
+                                }
+                            }
+                        ) {
+                            Column {
+                                Toolbar(
+                                    onClickBack = { onBackPressed() },
+                                    onClickMenu = { scope.launch { drawerState.open() } })
+
+                                val character =
+                                    characterDetailsViewModel.characterDetailsLiveData.observeAsState().value
+
+                                character?.let { character ->
+                                    PhotoAndName(
+                                        photoUrl = character.photo,
+                                        name = character.name,
+                                        modifier = Modifier.padding(
+                                            top = dimensionResource(id = R.dimen.padding_64dp),
+                                            start = defaultPadding,
+                                            end = defaultPadding
+                                        )
+                                    )
+
+                                    LabelContent(
+                                        label = stringResource(id = R.string.character_details_title_label),
+                                        content = character.title,
+                                        modifier = Modifier.padding(
+                                            top = dimensionResource(id = R.dimen.padding_24dp),
+                                            start = defaultPadding,
+                                            end = defaultPadding
+                                        )
+                                    )
+                                    LabelContent(
+                                        label = stringResource(id = R.string.character_details_family_label),
+                                        content = character.house.name,
+                                        modifier = Modifier.padding(
+                                            top = dimensionResource(id = R.dimen.padding_4dp),
+                                            start = defaultPadding,
+                                            end = defaultPadding
+                                        )
+                                    )
+
+                                    Section(
+                                        title = stringResource(id = R.string.character_details_quotes_section),
+                                        modifier = Modifier.padding(
+                                            top = defaultPadding,
+                                            start = defaultPadding,
+                                            end = defaultPadding
+                                        )
+                                    )
+
+                                    LazyColumn(
+                                        modifier = Modifier.padding(
+                                            top = defaultPadding,
+                                            start = defaultPadding,
+                                            end = defaultPadding
+                                        )
+                                    ) {
+                                        items(character.quotes) { quote ->
+                                            QuoteCopy(
+                                                text = quote.text,
+                                                onCopyClicked = {
+                                                    viewModel.onQuoteCopied(it)
+                                                },
+                                                modifier = Modifier.padding(bottom = defaultPadding)
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         }

@@ -20,6 +20,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.junyidark.igotanapp.R
 import com.junyidark.igotanapp.domain.models.CharacterBasics
+import com.junyidark.igotanapp.presentation.core.ErrorScreen
+import com.junyidark.igotanapp.presentation.core.LoadingScreen
 import com.junyidark.igotanapp.presentation.navigation.RouterInterface
 import com.junyidark.igotanapp.presentation.theme.IGOTanappTheme
 import com.junyidark.igotanapp.presentation.theme.Theme
@@ -97,25 +99,34 @@ class HomeActivity : ComponentActivity() {
                         )
                     )
             ) {
-                Column(
-                    verticalArrangement = Arrangement.SpaceBetween,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(all = dimensionResource(id = R.dimen.padding_16dp))
-                ) {
-                    Spacer(Modifier.heightIn(dimensionResource(id = R.dimen.padding_24dp)))
-                    Title()
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        SearchBar { homeViewModel.onTextChanged(it) }
-                        SearchButton { homeViewModel.onSearchClicked() }
-                        CallToPage(page = stringResource(id = R.string.home_all_characters_page)) { homeViewModel.onAllCharactersClicked() }
-                        CallToPage(page = stringResource(id = R.string.home_the_houses_page)) { homeViewModel.onTheHousesClicked() }
+                val isLoading = homeViewModel.isLoadingLiveData.observeAsState().value ?: false
+                val isError = homeViewModel.isOnErrorLiveData.observeAsState().value ?: false
+
+                when {
+                    isLoading -> LoadingScreen()
+                    isError -> ErrorScreen()
+                    else -> {
+                        Column(
+                            verticalArrangement = Arrangement.SpaceBetween,
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(all = dimensionResource(id = R.dimen.padding_16dp))
+                        ) {
+                            Spacer(Modifier.heightIn(dimensionResource(id = R.dimen.padding_24dp)))
+                            Title()
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                SearchBar { homeViewModel.onTextChanged(it) }
+                                SearchButton { homeViewModel.onSearchClicked() }
+                                CallToPage(page = stringResource(id = R.string.home_all_characters_page)) { homeViewModel.onAllCharactersClicked() }
+                                CallToPage(page = stringResource(id = R.string.home_the_houses_page)) { homeViewModel.onTheHousesClicked() }
+                            }
+                            Copyright { homeViewModel.onAuthorNameClicked() }
+                        }
                     }
-                    Copyright { homeViewModel.onAuthorNameClicked() }
                 }
             }
         }

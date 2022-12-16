@@ -30,14 +30,25 @@ class HousesListViewModel @Inject constructor(
     private val themeMutableLiveData = MutableLiveData<Theme>()
     val themeLiveData: LiveData<Theme> = themeMutableLiveData
 
+    private val isLoadingMutableLiveData = MutableLiveData<Boolean>()
+    val isLoadingLiveData: LiveData<Boolean> = isLoadingMutableLiveData
+
+    private val isOnErrorMutableLiveData = MutableLiveData(false)
+    val isOnErrorLiveData: LiveData<Boolean> = isOnErrorMutableLiveData
+
     private var housesList = emptyList<House>()
 
     fun loadList() {
+        isLoadingMutableLiveData.value = true
         viewModelScope.launch {
-            getAllHousesListUseCase.invoke { list ->
-                housesList = list
-                housesListMutableLiveData.postValue(list)
-            }
+            getAllHousesListUseCase.invoke(
+                onSuccess = { list ->
+                    housesList = list
+                    housesListMutableLiveData.postValue(list)
+                    isLoadingMutableLiveData.postValue(false)
+                },
+                onError = { isOnErrorMutableLiveData.postValue(true) }
+            )
         }
     }
 

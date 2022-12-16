@@ -4,6 +4,8 @@ import androidx.compose.ui.graphics.Color
 
 // Base
 val RegularBlack = Color(0xFF171717)
+val LightCyan = Color(0xFFE0FFFF)
+val SteelBlue = Color(0xFF4682B4)
 
 // Iron Hand Theme
 val YellowCorn = Color(0xFFF2D98D)

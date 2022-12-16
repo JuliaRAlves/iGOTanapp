@@ -30,6 +30,12 @@ class CharacterDetailsViewModel @Inject constructor(
     private val themeMutableLiveData = MutableLiveData<Theme>()
     val themeLiveData: LiveData<Theme> = themeMutableLiveData
 
+    private val isLoadingMutableLiveData = MutableLiveData<Boolean>()
+    val isLoadingLiveData: LiveData<Boolean> = isLoadingMutableLiveData
+
+    private val isOnErrorMutableLiveData = MutableLiveData(false)
+    val isOnErrorLiveData: LiveData<Boolean> = isOnErrorMutableLiveData
+
     private val characterBasics by lazy {
         savedStateHandle.get<CharacterBasics>(
             EXTRA_CHARACTER_BASICS
@@ -38,15 +44,21 @@ class CharacterDetailsViewModel @Inject constructor(
 
     fun loadInfo() {
         characterBasics?.let {
+            isLoadingMutableLiveData.value = true
             loadCharacterDetails(it)
         }
     }
 
     private fun loadCharacterDetails(characterBasics: CharacterBasics) {
         viewModelScope.launch {
-            getCharacterFullInfoUseCase.invoke(characterBasics) { character ->
-                characterDetailsMutableLiveData.postValue(character)
-            }
+            getCharacterFullInfoUseCase.invoke(
+                characterBasics,
+                onSuccess = { character ->
+                    characterDetailsMutableLiveData.postValue(character)
+                    isLoadingMutableLiveData.postValue(false)
+                },
+                onError = { isOnErrorMutableLiveData.postValue(true) }
+            )
         }
     }
 

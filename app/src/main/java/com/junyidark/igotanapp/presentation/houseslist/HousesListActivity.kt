@@ -24,6 +24,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.junyidark.igotanapp.R
 import com.junyidark.igotanapp.domain.models.House
+import com.junyidark.igotanapp.presentation.core.ErrorScreen
+import com.junyidark.igotanapp.presentation.core.LoadingScreen
 import com.junyidark.igotanapp.presentation.core.Toolbar
 import com.junyidark.igotanapp.presentation.houseslist.HousesListViewModel.HousesListViewState.GoToHouseDetailsState
 import com.junyidark.igotanapp.presentation.navigation.RouterInterface
@@ -87,50 +89,58 @@ class HousesListActivity : ComponentActivity() {
                 val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
                 val scope = rememberCoroutineScope()
 
-                ModalDrawer(
-                    drawerState = drawerState,
-                    drawerBackgroundColor = MaterialTheme.colors.secondary,
-                    drawerContentColor = MaterialTheme.colors.onSecondary,
-                    drawerElevation = dimensionResource(id = R.dimen.drawer_elevation),
-                    drawerContent = {
-                        Column {
-                            Text(
-                                text = stringResource(id = R.string.drawer_change_theme),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(dimensionResource(id = R.dimen.padding_16dp))
-                                    .clickable { housesListViewModel.onSwitchThemeClicked() }
-                            )
-                            Text(
-                                text = stringResource(id = R.string.drawer_close),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(dimensionResource(id = R.dimen.padding_16dp))
-                                    .clickable { scope.launch { drawerState.close() } }
-                            )
-                        }
-                    }
-                ) {
-                    Column {
-                        Toolbar(
-                            onClickBack = { onBackPressed() },
-                            onClickMenu = { scope.launch { drawerState.open() } })
+                val isLoading = housesListViewModel.isLoadingLiveData.observeAsState().value ?: false
+                val isError = housesListViewModel.isOnErrorLiveData.observeAsState().value ?: false
 
-                        val housesList =
-                            housesListViewModel.housesListLiveData.observeAsState().value ?: emptyList()
+                when {
+                    isLoading -> LoadingScreen()
+                    isError -> ErrorScreen()
+                    else -> {
+                        ModalDrawer(
+                            drawerState = drawerState,
+                            drawerBackgroundColor = MaterialTheme.colors.secondary,
+                            drawerContentColor = MaterialTheme.colors.onSecondary,
+                            drawerElevation = dimensionResource(id = R.dimen.drawer_elevation),
+                            drawerContent = {
+                                Column {
+                                    Text(
+                                        text = stringResource(id = R.string.drawer_change_theme),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(dimensionResource(id = R.dimen.padding_16dp))
+                                            .clickable { housesListViewModel.onSwitchThemeClicked() }
+                                    )
+                                    Text(
+                                        text = stringResource(id = R.string.drawer_close),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(dimensionResource(id = R.dimen.padding_16dp))
+                                            .clickable { scope.launch { drawerState.close() } }
+                                    )
+                                }
+                            }
+                        ) {
+                            Column {
+                                Toolbar(
+                                    onClickBack = { onBackPressed() },
+                                    onClickMenu = { scope.launch { drawerState.open() } })
 
-                        LazyColumn {
-                            itemsIndexed(housesList) { index, house ->
-                                HouseListItem(
-                                    coatOfArms = house.coatOfArms,
-                                    name = house.name,
-                                    onClick = { viewModel.onHouseClicked(index) })
+                                val housesList =
+                                    housesListViewModel.housesListLiveData.observeAsState().value ?: emptyList()
+
+                                LazyColumn {
+                                    itemsIndexed(housesList) { index, house ->
+                                        HouseListItem(
+                                            coatOfArms = house.coatOfArms,
+                                            name = house.name,
+                                            onClick = { viewModel.onHouseClicked(index) })
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-
         }
     }
 }

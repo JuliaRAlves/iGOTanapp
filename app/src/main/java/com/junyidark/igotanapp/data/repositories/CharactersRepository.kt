@@ -19,9 +19,7 @@ class CharactersRepository @Inject constructor(
     private val basicsApi: CharacterBasicsApiInterface,
     private val detailsApi: CharacterDetailsApiInterface
 ) : CharactersRepositoryInterface {
-    override fun getAllCharactersBasics(
-        onSuccess: (List<CharacterBasics>) -> Unit
-    ) {
+    override fun getAllCharactersBasics(onSuccess: (List<CharacterBasics>) -> Unit, onError: () -> Unit) {
         basicsApi.getAllCharactersBasics().enqueue(object : Callback<List<CharacterBasicsResponse>> {
             override fun onResponse(
                 call: Call<List<CharacterBasicsResponse>>,
@@ -32,12 +30,13 @@ class CharactersRepository @Inject constructor(
 
             override fun onFailure(call: Call<List<CharacterBasicsResponse>>, t: Throwable) {
                 Log.e("Characters basics api", "onFailure: getAllCharactersBasics ")
+                onError()
             }
 
         })
     }
 
-    override fun getCharacterDetails(firstName: String, onSuccess: (CharacterDetails) -> Unit) {
+    override fun getCharacterDetails(firstName: String, onSuccess: (CharacterDetails) -> Unit, onError: () -> Unit) {
         detailsApi.getCharacterDetails(firstName).enqueue(object : Callback<List<CharacterDetailsResponse>> {
             override fun onResponse(
                 call: Call<List<CharacterDetailsResponse>>,
@@ -54,6 +53,7 @@ class CharactersRepository @Inject constructor(
 
             override fun onFailure(call: Call<List<CharacterDetailsResponse>>, t: Throwable) {
                 Log.e("Characters details api", "onFailure: getCharacterDetails ")
+                onError()
             }
 
         })

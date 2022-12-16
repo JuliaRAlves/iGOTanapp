@@ -5,6 +5,6 @@ import com.junyidark.igotanapp.domain.models.CharacterDetails
 import retrofit2.Response
 
 interface CharactersRepositoryInterface {
-    fun getAllCharactersBasics(onSuccess: (List<CharacterBasics>) -> Unit)
-    fun getCharacterDetails(firstName: String, onSuccess: (CharacterDetails) -> Unit)
+    fun getAllCharactersBasics(onSuccess: (List<CharacterBasics>) -> Unit, onError: () -> Unit)
+    fun getCharacterDetails(firstName: String, onSuccess: (CharacterDetails) -> Unit, onError: () -> Unit)
 }
