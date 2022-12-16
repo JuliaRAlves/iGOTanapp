@@ -6,7 +6,7 @@
     <string name="drawer_change_theme">Switch theme</string>
     <string name="drawer_close">Close</string>
 
-    <string name="error_message">Winter has come!\nIt seems your content has frozen and we can\'t provide it to you. Try again later!</string>
+    <string name="error_message">Winter has come!\n\nIt seems your content has frozen and we can\'t provide it to you.\n\nTry again later!</string>
 
     <string name="home_app_name_pt1">i\u0020</string>
     <string name="home_app_name_pt2">GOT\n</string>

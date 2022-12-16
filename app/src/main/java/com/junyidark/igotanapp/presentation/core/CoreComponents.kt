@@ -273,11 +273,3 @@ fun ErrorScreen(
         )
     }
 }
-
-@Preview
-@Composable
-fun Aa() {
-    IGOTanappTheme(theme = Theme.IRON_HAND) {
-        ErrorScreen()
-    }
-}
