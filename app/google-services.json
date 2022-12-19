@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "812060366262",
+    "project_id": "igotanapp-junyidark",
+    "storage_bucket": "igotanapp-junyidark.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:812060366262:android:b72f3728469b160f569d17",
+        "android_client_info": {
+          "package_name": "com.junyidark.igotanapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "812060366262-rqi48o94mj4ukgthmc0nhu8d0v89hpd3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtYp3RAl_FM4U78Wf_qBL0ixZRWuD9miM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "812060366262-rqi48o94mj4ukgthmc0nhu8d0v89hpd3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

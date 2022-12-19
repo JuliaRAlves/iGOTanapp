@@ -3,6 +3,9 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
+    id 'com.google.firebase.firebase-perf'
 }
 apply plugin: "androidx.navigation.safeargs"
 apply plugin: 'dagger.hilt.android.plugin'
@@ -85,6 +88,13 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
     implementation "com.squareup.okhttp3:logging-interceptor:4.5.0"
+
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:30.5.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation "com.google.firebase:firebase-crashlytics-ktx"
+    implementation "com.google.firebase:firebase-perf-ktx"
+
 }
 
 kapt {
