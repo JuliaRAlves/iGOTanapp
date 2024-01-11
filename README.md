@@ -2,6 +2,8 @@
 
 App that shows information regarding Game of Thrones characters and houses.
 
+[![FLipkart](https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=com.junyidark.igotanapp)
+
 ###### Disclaimer
 I did this app while doing a Jetpack Compose pathway. That's why the code seems messy in the home screen and is slightly better in the lists and details screens. I intend to improve it in the future.
 
