@@ -12,14 +12,16 @@ apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdk 33
+    namespace 'com.junyidark.igotanapp'
+
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.junyidark.igotanapp"
         minSdk 21
-        targetSdk 33
-        versionCode 10002
-        versionName "1.0.2"
+        targetSdk 35
+        versionCode 10003
+        versionName "1.0.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -74,9 +76,9 @@ dependencies {
     implementation "io.coil-kt:coil-compose:2.0.0-rc01"
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.38.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.38.1")
-    implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
+    implementation("com.google.dagger:hilt-android:2.49")
+    kapt("com.google.dagger:hilt-android-compiler:2.48.1")
+    implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

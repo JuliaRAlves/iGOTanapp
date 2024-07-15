@@ -29,12 +29,13 @@ import com.junyidark.igotanapp.presentation.theme.Theme
 fun Title() {
     Text(
         formattedAppTitle(
-            firstPart = R.string.home_app_name_pt1,
-            secondPart = R.string.home_app_name_pt2,
-            lastPart = R.string.home_app_name_pt3,
+            firstPart = stringResource(id = R.string.home_app_name_pt1),
+            secondPart = stringResource(id = R.string.home_app_name_pt2),
+            lastPart = stringResource(id = R.string.home_app_name_pt3),
             firstPartStyle = MaterialTheme.typography.h2,
             secondPartStyle = MaterialTheme.typography.h1,
-            lastPartStyle = MaterialTheme.typography.h2
+            lastPartStyle = MaterialTheme.typography.h2,
+            colors = MaterialTheme.colors
         )
     )
 }
@@ -125,35 +126,46 @@ fun CallToPage(page: String, onClick: (Int) -> Unit) {
 @Composable
 fun Copyright(onClick: (Int) -> Unit) {
     ClickableText(
-        text = formattedCopyright(),
+        text = formattedCopyright(
+            typography = MaterialTheme.typography,
+            colors = MaterialTheme.colors,
+            firstPart = stringResource(id = R.string.home_copyright_pt1),
+            secondPart = stringResource(id = R.string.home_copyright_author),
+            thirdPart = stringResource(id = R.string.home_copyright_pt2)
+        ),
         modifier = Modifier.fillMaxWidth(),
         onClick = onClick
     )
 }
 
-@Composable
-fun formattedCopyright(): AnnotatedString {
+fun formattedCopyright(
+    typography: Typography,
+    colors: Colors,
+    firstPart: String,
+    secondPart: String,
+    thirdPart: String
+): AnnotatedString {
     return buildAnnotatedString {
         withStyle(style = ParagraphStyle().copy(textAlign = TextAlign.Center)) {
             withStyle(
-                style = MaterialTheme.typography.overline.toSpanStyle()
-                    .copy(color = MaterialTheme.colors.onSecondary)
+                style = typography.overline.toSpanStyle()
+                    .copy(color = colors.onSecondary)
             ) {
-                append(stringResource(id = R.string.home_copyright_pt1))
+                append(firstPart)
             }
 
             withStyle(
-                style = MaterialTheme.typography.overline.toSpanStyle()
-                    .copy(color = MaterialTheme.colors.primary)
+                style = typography.overline.toSpanStyle()
+                    .copy(color = colors.primary)
             ) {
-                append(stringResource(id = R.string.home_copyright_author))
+                append(secondPart)
             }
 
             withStyle(
-                style = MaterialTheme.typography.overline.toSpanStyle()
-                    .copy(color = MaterialTheme.colors.onSecondary)
+                style = typography.overline.toSpanStyle()
+                    .copy(color = colors.onSecondary)
             ) {
-                append(stringResource(id = R.string.home_copyright_pt2))
+                append(thirdPart)
             }
         }
     }

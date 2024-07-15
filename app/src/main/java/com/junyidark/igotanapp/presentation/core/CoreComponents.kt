@@ -45,12 +45,13 @@ fun Toolbar(
         title = {
             Text(
                 text = formattedAppTitle(
-                    firstPart = R.string.toolbar_app_name_pt1,
-                    secondPart = R.string.toolbar_app_name_pt2,
-                    lastPart = R.string.toolbar_app_name_pt3,
+                    firstPart = stringResource(id = R.string.toolbar_app_name_pt1),
+                    secondPart = stringResource(id = R.string.toolbar_app_name_pt2),
+                    lastPart = stringResource(id = R.string.toolbar_app_name_pt3),
                     firstPartStyle = MaterialTheme.typography.body1,
                     secondPartStyle = MaterialTheme.typography.body1,
-                    lastPartStyle = MaterialTheme.typography.body1
+                    lastPartStyle = MaterialTheme.typography.body1,
+                    colors = MaterialTheme.colors
                 )
             )
         },
@@ -65,36 +66,36 @@ fun Toolbar(
     )
 }
 
-@Composable
 fun formattedAppTitle(
-    @StringRes firstPart: Int,
-    @StringRes secondPart: Int,
-    @StringRes lastPart: Int,
+    firstPart: String,
+    secondPart: String,
+    lastPart: String,
     firstPartStyle: TextStyle,
     secondPartStyle: TextStyle,
-    lastPartStyle: TextStyle
+    lastPartStyle: TextStyle,
+    colors: Colors
 ): AnnotatedString {
     return buildAnnotatedString {
         withStyle(style = ParagraphStyle()) {
             withStyle(
                 style = firstPartStyle.toSpanStyle()
-                    .copy(color = MaterialTheme.colors.onSecondary)
+                    .copy(color = colors.onSecondary)
             ) {
-                append(stringResource(id = firstPart))
+                append(firstPart)
             }
 
             withStyle(
                 style = secondPartStyle.toSpanStyle()
-                    .copy(color = MaterialTheme.colors.primary)
+                    .copy(color = colors.primary)
             ) {
-                append(stringResource(id = secondPart))
+                append(secondPart)
             }
 
             withStyle(
                 style = lastPartStyle.toSpanStyle()
-                    .copy(color = MaterialTheme.colors.onSecondary)
+                    .copy(color = colors.onSecondary)
             ) {
-                append(stringResource(id = lastPart))
+                append(lastPart)
             }
         }
     }
