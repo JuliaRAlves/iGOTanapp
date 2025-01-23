@@ -41,9 +41,9 @@ fun Title() {
 }
 
 @Composable
-fun SearchBar(onTextChange: (String) -> Unit) {
+fun SearchBar(initialValue: String? = null, onTextChange: (String) -> Unit) {
     Column {
-        var textState by remember { mutableStateOf("") }
+        var textState by remember { mutableStateOf(initialValue ?: "") }
 
         Text(
             text = stringResource(id = R.string.home_search_label),
@@ -72,7 +72,10 @@ fun SearchBar(onTextChange: (String) -> Unit) {
             singleLine = true,
             trailingIcon = {
                 if (textState.isNotEmpty()) {
-                    IconButton(onClick = { textState = "" }) {
+                    IconButton(onClick = {
+                        textState = ""
+                        onTextChange("")
+                    }) {
                         Icon(
                             imageVector = Icons.Outlined.Close,
                             contentDescription = null

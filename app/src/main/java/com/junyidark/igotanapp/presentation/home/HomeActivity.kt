@@ -84,7 +84,7 @@ class HomeActivity : ComponentActivity() {
 
     @Composable
     private fun Home(homeViewModel: HomeViewModel = viewModel()) {
-        val theme: Theme by viewModel.themeLiveData.observeAsState(initial = Theme.IRON_HAND)
+        val theme: Theme by homeViewModel.themeLiveData.observeAsState(initial = Theme.IRON_HAND)
 
         IGOTanappTheme(theme) {
             Box(
@@ -119,7 +119,7 @@ class HomeActivity : ComponentActivity() {
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 modifier = Modifier.fillMaxWidth()
                             ) {
-                                SearchBar { homeViewModel.onTextChanged(it) }
+                                SearchBar(initialValue = homeViewModel.queryLiveData.value) { homeViewModel.onTextChanged(it) }
                                 SearchButton { homeViewModel.onSearchClicked() }
                                 CallToPage(page = stringResource(id = R.string.home_all_characters_page)) { homeViewModel.onAllCharactersClicked() }
                                 CallToPage(page = stringResource(id = R.string.home_the_houses_page)) { homeViewModel.onTheHousesClicked() }
