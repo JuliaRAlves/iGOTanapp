@@ -5,21 +5,15 @@ import com.junyidark.igotanapp.domain.repositories.CharactersRepositoryInterface
 import javax.inject.Inject
 
 interface SearchCharacterByNameUseCaseInterface {
-    fun invoke(query: String, onSuccess: (List<CharacterBasics>) -> Unit, onError: () -> Unit)
+    suspend fun invoke(query: String): Result<List<CharacterBasics>>
 }
 
 class SearchCharacterByNameUseCase @Inject constructor(
     private val charactersRepository: CharactersRepositoryInterface
 ) : SearchCharacterByNameUseCaseInterface {
 
-    override fun invoke(query: String, onSuccess: (List<CharacterBasics>) -> Unit, onError: () -> Unit) {
-        charactersRepository.getAllCharactersBasics(
-            onSuccess = { charactersList ->
-                val resultList = charactersList.searchFor(query)
-                onSuccess(resultList)
-            },
-            onError = { onError() }
-        )
+    override suspend fun invoke(query: String): Result<List<CharacterBasics>> {
+        return charactersRepository.getAllCharactersBasics().map { it.searchFor(query) }
     }
 
     private fun List<CharacterBasics>.searchFor(query: String): List<CharacterBasics> {

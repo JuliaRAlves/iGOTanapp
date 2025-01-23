@@ -98,6 +98,13 @@ dependencies {
     implementation "com.google.firebase:firebase-crashlytics-ktx"
     implementation "com.google.firebase:firebase-perf-ktx"
 
+    // Mockito
+    testImplementation 'org.mockito:mockito-core:2.28.2'
+    androidTestImplementation 'org.mockito:mockito-android:2.28.2'
+    testImplementation 'org.mockito:mockito-inline:2.28.2'
+
+    // Truth
+    testImplementation "com.google.truth:truth:1.1"
 }
 
 kapt {
