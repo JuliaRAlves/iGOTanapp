@@ -31,10 +31,12 @@ class HomeViewModel @Inject constructor(
     private val isOnErrorMutableLiveData = MutableLiveData(false)
     val isOnErrorLiveData: LiveData<Boolean> = isOnErrorMutableLiveData
 
-    private var query: String = ""
+    private val queryMutableLiveData = MutableLiveData("")
+    val queryLiveData: LiveData<String> = queryMutableLiveData
 
     fun onSearchClicked() {
         isLoadingMutableLiveData.value = true
+        val query = queryLiveData.value ?: ""
 
         viewModelScope.launch {
             if (query.isNotEmpty()) {
@@ -63,7 +65,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onTextChanged(text: String) {
-        query = text
+        queryMutableLiveData.postValue(text)
     }
 
     fun updateTheme() {

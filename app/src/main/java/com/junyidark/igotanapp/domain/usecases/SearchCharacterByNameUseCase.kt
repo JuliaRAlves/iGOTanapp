@@ -23,6 +23,8 @@ class SearchCharacterByNameUseCase @Inject constructor(
     }
 
     private fun List<CharacterBasics>.searchFor(query: String): List<CharacterBasics> {
-        return this.filter { it.name.contains(query) }
+        return this.filter {
+            it.name.lowercase().contains(query.lowercase())
+        }
     }
 }
