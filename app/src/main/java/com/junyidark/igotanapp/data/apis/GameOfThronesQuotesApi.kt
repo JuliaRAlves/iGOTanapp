@@ -4,7 +4,6 @@ import com.junyidark.igotanapp.data.apis.interfaces.CharacterDetailsApiInterface
 import com.junyidark.igotanapp.data.apis.interfaces.HousesApiInterface
 import com.junyidark.igotanapp.data.models.CharacterDetailsResponse
 import com.junyidark.igotanapp.data.models.HouseResponse
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -15,7 +14,7 @@ interface GameOfThronesQuotesApiServices {
     suspend fun getCharacter(@Path("slug") slug: String): Response<List<CharacterDetailsResponse>>
 
     @GET("v1/houses")
-    fun getAllHouses(): Call<List<HouseResponse>>
+    suspend fun getAllHouses(): Response<List<HouseResponse>>
 }
 
 class GameOfThronesQuotesApi @Inject constructor(
@@ -27,7 +26,7 @@ class GameOfThronesQuotesApi @Inject constructor(
         return services.getCharacter(firstName)
     }
 
-    override fun getAllHouses(): Call<List<HouseResponse>> {
+    override suspend fun getAllHouses(): Response<List<HouseResponse>> {
         return services.getAllHouses()
     }
 

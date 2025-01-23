@@ -1,35 +1,27 @@
 package com.junyidark.igotanapp.data.repositories
 
-import android.util.Log
 import com.junyidark.igotanapp.data.apis.interfaces.HousesApiInterface
 import com.junyidark.igotanapp.data.models.HouseResponse
 import com.junyidark.igotanapp.domain.models.House
 import com.junyidark.igotanapp.domain.repositories.HousesRepositoryInterface
 import com.junyidark.igotanapp.domain.usecases.GetHouseCoatOfArmsUseCaseInterface
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 
 class HousesRepository @Inject constructor(
     private val api: HousesApiInterface,
     private val getHouseCoatOfArmsUseCase: GetHouseCoatOfArmsUseCaseInterface
 ) : HousesRepositoryInterface {
-    override fun getAllHouses(onSuccess: (List<House>) -> Unit, onError: () -> Unit) {
-        api.getAllHouses().enqueue(object : Callback<List<HouseResponse>> {
-            override fun onResponse(
-                call: Call<List<HouseResponse>>,
-                response: Response<List<HouseResponse>>
-            ) {
-                onSuccess(response.body()?.toDomainObject() ?: emptyList())
-            }
+    override suspend fun getAllHouses(): Result<List<House>> {
+        val housesCall = api.getAllHouses()
+        val body = housesCall.body()
 
-            override fun onFailure(call: Call<List<HouseResponse>>, t: Throwable) {
-                Log.e("Houses api", "onFailure: getAllHouses ")
-                onError()
-            }
-
-        })
+        return if (housesCall.isSuccessful && body != null) {
+            Result.success(body.toDomainObject())
+        } else if (housesCall.body() == null) {
+            Result.failure(Throwable("CharacterBasicsResponse is null"))
+        } else {
+            Result.failure(Throwable(housesCall.message()))
+        }
     }
 
     private fun List<HouseResponse>.toDomainObject(): List<House> {

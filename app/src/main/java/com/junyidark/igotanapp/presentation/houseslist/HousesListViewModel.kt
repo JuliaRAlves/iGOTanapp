@@ -41,14 +41,13 @@ class HousesListViewModel @Inject constructor(
     fun loadList() {
         isLoadingMutableLiveData.value = true
         viewModelScope.launch {
-            getAllHousesListUseCase.invoke(
-                onSuccess = { list ->
+            getAllHousesListUseCase.invoke()
+                .onSuccess { list ->
                     housesList = list
                     housesListMutableLiveData.postValue(list)
                     isLoadingMutableLiveData.postValue(false)
-                },
-                onError = { isOnErrorMutableLiveData.postValue(true) }
-            )
+                }
+                .onFailure { isOnErrorMutableLiveData.postValue(true) }
         }
     }
 
