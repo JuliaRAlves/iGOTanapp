@@ -21,6 +21,7 @@ If you're in the future and the code still sucks, maybe I have failed.
 - Hilt
 - Coil
 - Firebase
+- Mockito
 
 ## Design
 
