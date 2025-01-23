@@ -55,14 +55,13 @@ class CharactersListViewModel @Inject constructor(
 
     private fun loadAllCharacters() {
         viewModelScope.launch {
-            getAllCharactersListUseCase.invoke(
-                onSuccess = { list ->
+            getAllCharactersListUseCase.invoke()
+                .onSuccess { list ->
                     charactersListMutableLiveData.postValue(list)
                     charactersList = list
                     isLoadingMutableLiveData.postValue(false)
-                },
-                onError = { isOnErrorMutableLiveData.postValue(true) }
-            )
+                }
+               .onFailure { isOnErrorMutableLiveData.postValue(true) }
         }
     }
 

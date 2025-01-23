@@ -7,7 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.junyidark.igotanapp.domain.models.CharacterBasics
 import com.junyidark.igotanapp.domain.usecases.GetThemeUseCaseInterface
 import com.junyidark.igotanapp.domain.usecases.SearchCharacterByNameUseCaseInterface
-import com.junyidark.igotanapp.presentation.home.HomeViewModel.HomeViewState.*
+import com.junyidark.igotanapp.presentation.home.HomeViewModel.HomeViewState.GoToAllCharactersState
+import com.junyidark.igotanapp.presentation.home.HomeViewModel.HomeViewState.GoToAuthorState
+import com.junyidark.igotanapp.presentation.home.HomeViewModel.HomeViewState.GoToTheHousesState
+import com.junyidark.igotanapp.presentation.home.HomeViewModel.HomeViewState.LoadedResultState
 import com.junyidark.igotanapp.presentation.theme.Theme
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -40,12 +43,12 @@ class HomeViewModel @Inject constructor(
 
         viewModelScope.launch {
             if (query.isNotEmpty()) {
-                searchCharacterByNameUseCase.invoke(query, onSuccess = { list ->
-                    screenMutableLiveData.postValue(LoadedResultState(list))
-                    isLoadingMutableLiveData.postValue(false)
-                },
-                    onError = { isOnErrorMutableLiveData.postValue(true) }
-                )
+                searchCharacterByNameUseCase.invoke(query)
+                    .onSuccess { list ->
+                        screenMutableLiveData.postValue(LoadedResultState(list))
+                        isLoadingMutableLiveData.postValue(false)
+                    }
+                    .onFailure { isOnErrorMutableLiveData.postValue(true) }
             } else {
                 isLoadingMutableLiveData.postValue(false)
             }

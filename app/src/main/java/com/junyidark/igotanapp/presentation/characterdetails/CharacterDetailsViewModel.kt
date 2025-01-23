@@ -1,6 +1,10 @@
 package com.junyidark.igotanapp.presentation.characterdetails
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.junyidark.igotanapp.domain.models.Character
 import com.junyidark.igotanapp.domain.models.CharacterBasics
 import com.junyidark.igotanapp.domain.usecases.GetCharacterFullInfoUseCaseInterface
@@ -51,14 +55,12 @@ class CharacterDetailsViewModel @Inject constructor(
 
     private fun loadCharacterDetails(characterBasics: CharacterBasics) {
         viewModelScope.launch {
-            getCharacterFullInfoUseCase.invoke(
-                characterBasics,
-                onSuccess = { character ->
+            getCharacterFullInfoUseCase.invoke(characterBasics)
+                .onSuccess { character ->
                     characterDetailsMutableLiveData.postValue(character)
                     isLoadingMutableLiveData.postValue(false)
-                },
-                onError = { isOnErrorMutableLiveData.postValue(true) }
-            )
+                }
+                .onFailure { isOnErrorMutableLiveData.postValue(true) }
         }
     }
 

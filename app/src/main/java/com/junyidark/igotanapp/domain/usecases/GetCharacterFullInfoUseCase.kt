@@ -8,28 +8,20 @@ import com.junyidark.igotanapp.domain.repositories.CharactersRepositoryInterface
 import javax.inject.Inject
 
 interface GetCharacterFullInfoUseCaseInterface {
-    fun invoke(characterBasics: CharacterBasics, onSuccess: (Character) -> Unit, onError: () -> Unit)
+    suspend fun invoke(characterBasics: CharacterBasics): Result<Character>
 }
 
 class GetCharacterFullInfoUseCase @Inject constructor(
     private val charactersRepository: CharactersRepositoryInterface
 ) : GetCharacterFullInfoUseCaseInterface {
 
-    override fun invoke(
-        characterBasics: CharacterBasics,
-        onSuccess: (Character) -> Unit,
-        onError: () -> Unit
-    ) {
+    override suspend fun invoke(characterBasics: CharacterBasics): Result<Character> {
         val characterName = characterBasics.name
         val characterFirstName = characterName.split(" ").first().lowercase()
 
-        charactersRepository.getCharacterDetails(
-            characterFirstName,
-            onSuccess = { characterDetails ->
-                onSuccess(joinCharacterBasicsAndDetails(characterBasics, characterDetails))
-            },
-            onError = { onError() }
-        )
+        return charactersRepository.getCharacterDetails(characterFirstName).map {
+            joinCharacterBasicsAndDetails(characterBasics, it)
+        }
     }
 
     private fun joinCharacterBasicsAndDetails(
