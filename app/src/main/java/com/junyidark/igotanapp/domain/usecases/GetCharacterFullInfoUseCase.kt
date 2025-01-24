@@ -26,20 +26,20 @@ class GetCharacterFullInfoUseCase @Inject constructor(
 
     private fun joinCharacterBasicsAndDetails(
         characterBasics: CharacterBasics,
-        characterDetails: CharacterDetails?
+        characterDetails: CharacterDetails
     ): Character {
-        val characterHouse = characterDetails?.house?.name ?: characterBasics.houseName
+        val characterHouse = characterDetails.house ?: House(
+            coatOfArms = -1,
+            name = characterBasics.houseName,
+            members = emptyList()
+        )
 
         return Character(
             photo = characterBasics.photo,
             name = characterBasics.name,
             title = characterBasics.title,
-            house = House(
-                coatOfArms = -1,
-                name = characterHouse,
-                members = emptyList()
-            ),
-            quotes = characterDetails?.quotes ?: emptyList()
+            house = characterHouse,
+            quotes = characterDetails.quotes
         )
     }
 }
