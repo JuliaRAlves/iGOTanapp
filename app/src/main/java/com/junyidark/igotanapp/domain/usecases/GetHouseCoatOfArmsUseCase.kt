@@ -20,6 +20,10 @@ class GetHouseCoatOfArmsUseCase @Inject constructor() : GetHouseCoatOfArmsUseCas
             houseName.contains(" Bolton ") -> R.drawable.house_bolton
             houseName.contains(" Baelish ") -> R.drawable.house_baelish
             houseName.contains(" Tyrell ") -> R.drawable.house_tyrell
+            houseName.contains(" Clegane ") -> R.drawable.house_clegane
+            houseName.contains(" Frey ") -> R.drawable.house_frey
+            houseName.contains(" Martell ") -> R.drawable.house_martell
+            houseName.contains(" Mormont ") -> R.drawable.house_mormont
             else -> R.drawable.house_generic
         }
     }
