@@ -15,7 +15,7 @@ class SetThemeUseCase @Inject constructor(
 
     override fun invoke() {
         val currentThemeString = preferences.getString(THEME_PREFERENCE, Theme.IRON_HAND.toString())
-        val currentTheme = Theme.values().firstOrNull() { it.toString() == currentThemeString } ?: Theme.IRON_HAND
+        val currentTheme = Theme.entries.firstOrNull { it.toString() == currentThemeString } ?: Theme.IRON_HAND
 
         val newTheme = when (currentTheme) {
             Theme.INTO_THE_SUN -> Theme.DEEP_RIVERS

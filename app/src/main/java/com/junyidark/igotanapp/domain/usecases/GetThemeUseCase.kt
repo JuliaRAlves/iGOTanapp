@@ -16,7 +16,7 @@ class GetThemeUseCase @Inject constructor(
     override fun invoke(): Theme {
         val themeString = preferences.getString(THEME_PREFERENCE, Theme.IRON_HAND.toString())
 
-        return Theme.values().firstOrNull() { it.toString() == themeString } ?: Theme.IRON_HAND
+        return Theme.entries.firstOrNull { it.toString() == themeString } ?: Theme.IRON_HAND
     }
 
 }

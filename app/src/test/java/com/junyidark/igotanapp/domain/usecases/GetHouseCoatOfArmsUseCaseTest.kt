@@ -8,7 +8,7 @@ import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-class GeHouseCoatOfArmsUseCaseTest {
+class GetHouseCoatOfArmsUseCaseTest {
 
     private lateinit var useCase: GetHouseCoatOfArmsUseCaseInterface
 
