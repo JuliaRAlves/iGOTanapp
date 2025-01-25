@@ -1,6 +1,10 @@
 package com.junyidark.igotanapp.presentation.characterslist
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.junyidark.igotanapp.domain.models.CharacterBasics
 import com.junyidark.igotanapp.domain.usecases.GetAllCharactersListUseCaseInterface
 import com.junyidark.igotanapp.domain.usecases.GetThemeUseCaseInterface
@@ -35,14 +39,11 @@ class CharactersListViewModel @Inject constructor(
     private val isOnErrorMutableLiveData = MutableLiveData(false)
     val isOnErrorLiveData: LiveData<Boolean> = isOnErrorMutableLiveData
 
-
     private val charactersResultList by lazy {
         savedStateHandle.get<List<CharacterBasics>>(
             EXTRA_CHARACTERS_RESULT_LIST
         ) ?: emptyList<CharacterBasics>()
     }
-
-    private var charactersList = emptyList<CharacterBasics>()
 
     fun loadList() {
         if (charactersResultList.isEmpty()) {
@@ -58,15 +59,19 @@ class CharactersListViewModel @Inject constructor(
             getAllCharactersListUseCase.invoke()
                 .onSuccess { list ->
                     charactersListMutableLiveData.postValue(list)
-                    charactersList = list
                     isLoadingMutableLiveData.postValue(false)
                 }
-               .onFailure { isOnErrorMutableLiveData.postValue(true) }
+                .onFailure { isOnErrorMutableLiveData.postValue(true) }
         }
     }
 
     fun onCharacterClicked(position: Int) {
-        navigationMutableLiveData.postValue(GoToCharacterDetailsState(charactersList[position]))
+        val list = charactersListLiveData.value.orEmpty()
+        val character = list.getOrNull(position)
+        character?.let {
+            navigationMutableLiveData.postValue(GoToCharacterDetailsState(it))
+        }
+
     }
 
     fun onSwitchThemeClicked() {

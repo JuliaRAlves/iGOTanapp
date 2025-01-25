@@ -36,14 +36,11 @@ class HousesListViewModel @Inject constructor(
     private val isOnErrorMutableLiveData = MutableLiveData(false)
     val isOnErrorLiveData: LiveData<Boolean> = isOnErrorMutableLiveData
 
-    private var housesList = emptyList<House>()
-
     fun loadList() {
         isLoadingMutableLiveData.value = true
         viewModelScope.launch {
             getAllHousesListUseCase.invoke()
                 .onSuccess { list ->
-                    housesList = list
                     housesListMutableLiveData.postValue(list)
                     isLoadingMutableLiveData.postValue(false)
                 }
@@ -52,7 +49,11 @@ class HousesListViewModel @Inject constructor(
     }
 
     fun onHouseClicked(position: Int) {
-        screenMutableLiveData.value = GoToHouseDetailsState(housesList[position])
+        val list = housesListLiveData.value.orEmpty()
+        val house = list.getOrNull(position)
+        house?.let {
+            screenMutableLiveData.value = GoToHouseDetailsState(it)
+        }
     }
 
     fun onSwitchThemeClicked() {

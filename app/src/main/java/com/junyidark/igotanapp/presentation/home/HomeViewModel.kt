@@ -38,20 +38,16 @@ class HomeViewModel @Inject constructor(
     val queryLiveData: LiveData<String> = queryMutableLiveData
 
     fun onSearchClicked() {
+        val query = queryLiveData.value.takeIf { it?.isNotEmpty() == true } ?: return
         isLoadingMutableLiveData.value = true
-        val query = queryLiveData.value ?: ""
 
         viewModelScope.launch {
-            if (query.isNotEmpty()) {
-                searchCharacterByNameUseCase.invoke(query)
-                    .onSuccess { list ->
-                        screenMutableLiveData.postValue(LoadedResultState(list))
-                        isLoadingMutableLiveData.postValue(false)
-                    }
-                    .onFailure { isOnErrorMutableLiveData.postValue(true) }
-            } else {
-                isLoadingMutableLiveData.postValue(false)
-            }
+            searchCharacterByNameUseCase.invoke(query)
+                .onSuccess { list ->
+                    screenMutableLiveData.postValue(LoadedResultState(list))
+                    isLoadingMutableLiveData.postValue(false)
+                }
+                .onFailure { isOnErrorMutableLiveData.postValue(true) }
         }
     }
 
@@ -68,7 +64,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onTextChanged(text: String) {
-        queryMutableLiveData.postValue(text)
+        queryMutableLiveData.value = text
     }
 
     fun updateTheme() {
